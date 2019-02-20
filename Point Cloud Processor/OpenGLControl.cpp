@@ -1,6 +1,18 @@
 #include "stdafx.h"
 #include "OpenGLControl.h"
+//****************Newly Added Header Files********************
+#include "CustomAVLTree.h"
+#include <fstream>
+//************************************************************
 
+//*****************Global Variables of other files************
+extern CString file_path;
+CustomAVLTree *x_tree = new CustomAVLTree();
+CustomAVLTree *z_tree = new CustomAVLTree();
+double x_min = 9999, x_max = -9999;
+double y_min = 9999, y_max = -9999;
+double z_min = 9999, z_max = -9999;
+//************************************************************
 
 OpenGLControl::OpenGLControl()
 {
@@ -82,6 +94,26 @@ void OpenGLControl::oglInitialize(void)
 	// Create the OpenGL Rendering Context.
 	hrc = wglCreateContext(hdc);
 	wglMakeCurrent(hdc, hrc);
+
+	//**********************Reading Point Cloud into Customized AVL Tree*********************
+	double x, y, z;
+	int intensity;
+	std::fstream fin;
+	fin.open(file_path);
+	while (fin >> x >> y >> z >> intensity) {
+		//*********************getting max and min values of coordinates*********************
+		x_min = x > x_min ? x_min : x;
+		x_max = x > x_max ? x : x_max;
+		y_min = y > y_min ? y_min : y;
+		y_max = y > y_max ? y : y_max;
+		z_min = z > z_min ? z_min : z;
+		z_max = z > z_max ? z : z_max;
+		//***********************************************************************************
+		x_tree->root = x_tree->insert(x_tree->root, x, x, y, z);
+		z_tree->root = z_tree->insert(z_tree->root, z, x, y, z);
+	}
+	fin.close();
+	//***************************************************************************************
 
 	// Basic Setup:
 	//
