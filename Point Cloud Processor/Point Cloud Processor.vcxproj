@@ -118,6 +118,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
+      <AdditionalDependencies>opengl32.lib;glu32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -184,6 +185,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="MainDialog.h" />
+    <ClInclude Include="OpenGLControl.h" />
     <ClInclude Include="Point Cloud Processor.h" />
     <ClInclude Include="Point Cloud ProcessorDlg.h" />
     <ClInclude Include="Resource.h" />
@@ -192,6 +194,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MainDialog.cpp" />
+    <ClCompile Include="OpenGLControl.cpp" />
     <ClCompile Include="Point Cloud Processor.cpp" />
     <ClCompile Include="Point Cloud ProcessorDlg.cpp" />
     <ClCompile Include="stdafx.cpp">
