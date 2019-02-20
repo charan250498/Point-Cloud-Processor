@@ -12,13 +12,17 @@ CustomAVLTree *z_tree = new CustomAVLTree();
 double x_min = 9999, x_max = -9999;
 double y_min = 9999, y_max = -9999;
 double z_min = 9999, z_max = -9999;
+
+double x_offset, y_offset, z_offset;
+
+void renderPoints(struct CustomAVLTreeNode*);
 //************************************************************
 
 OpenGLControl::OpenGLControl()
 {
 	m_fPosX = 0.0f;    // X position of model in camera view
 	m_fPosY = 0.0f;    // Y position of model in camera view
-	m_fZoom = 10.0f;   // Zoom on model in camera view
+	m_fZoom = 50.0f;   // Zoom on model in camera view
 	m_fRotX = 0.0f;    // Rotation on model in camera view
 	m_fRotY = 0.0f;    // Rotation on model in camera view
 }
@@ -100,7 +104,7 @@ void OpenGLControl::oglInitialize(void)
 	int intensity;
 	std::fstream fin;
 	fin.open(file_path);
-	while (fin >> x >> y >> z >> intensity) {
+	while (fin >> z >> x >> y >> intensity) {
 		//*********************getting max and min values of coordinates*********************
 		x_min = x > x_min ? x_min : x;
 		x_max = x > x_max ? x : x_max;
@@ -113,6 +117,39 @@ void OpenGLControl::oglInitialize(void)
 		z_tree->root = z_tree->insert(z_tree->root, z, x, y, z);
 	}
 	fin.close();
+
+		//**************************Offset Calculation***************************************
+		//x_offset
+	if (x_min > 0 && x_max > 0) {
+		x_offset = -x_min - (double)((x_max - x_min) / 2);
+	}
+	else if (x_min < 0 && x_max < 0) {
+		x_offset = x_min + (double)(-(x_max - x_min) / 2);
+	}
+	else {
+		x_offset = 0;
+	}
+		//y_offset
+	if (y_min > 0 && y_max > 0) {
+		y_offset = -y_min - (double)((y_max - y_min) / 2);
+	}
+	else if (y_min < 0 && y_max < 0) {
+		y_offset = y_min + (double)(-(y_max - y_min) / 2);
+	}
+	else {
+		y_offset = 0;
+	}
+		//z_offset
+	if (z_min > 0 && z_max > 0) {
+		z_offset = -z_min - (double)((z_max - z_min) / 2);
+	}
+	else if (z_min < 0 && z_max < 0) {
+		z_offset = z_min + (double)(-(z_max - z_min) / 2);
+	}
+	else {
+		z_offset = 0;
+	}
+		//***********************************************************************************
 	//***************************************************************************************
 
 	// Basic Setup:
@@ -283,41 +320,23 @@ void OpenGLControl::oglDrawScene(void)
 	// Wireframe Mode
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-	glBegin(GL_QUADS);
-	// Top Side
-	glVertex3f(1.0f, 1.0f, 1.0f);
-	glVertex3f(1.0f, 1.0f, -1.0f);
-	glVertex3f(-1.0f, 1.0f, -1.0f);
-	glVertex3f(-1.0f, 1.0f, 1.0f);
+	glBegin(GL_POINTS);
+	glColor3f(1.0, 1.0, 1.0);
 
-	// Bottom Side
-	glVertex3f(-1.0f, -1.0f, -1.0f);
-	glVertex3f(1.0f, -1.0f, -1.0f);
-	glVertex3f(1.0f, -1.0f, 1.0f);
-	glVertex3f(-1.0f, -1.0f, 1.0f);
+	renderPoints(x_tree->root);
 
-	// Front Side
-	glVertex3f(1.0f, 1.0f, 1.0f);
-	glVertex3f(-1.0f, 1.0f, 1.0f);
-	glVertex3f(-1.0f, -1.0f, 1.0f);
-	glVertex3f(1.0f, -1.0f, 1.0f);
-
-	// Back Side
-	glVertex3f(-1.0f, -1.0f, -1.0f);
-	glVertex3f(-1.0f, 1.0f, -1.0f);
-	glVertex3f(1.0f, 1.0f, -1.0f);
-	glVertex3f(1.0f, -1.0f, -1.0f);
-
-	// Left Side
-	glVertex3f(-1.0f, -1.0f, -1.0f);
-	glVertex3f(-1.0f, -1.0f, 1.0f);
-	glVertex3f(-1.0f, 1.0f, 1.0f);
-	glVertex3f(-1.0f, 1.0f, -1.0f);
-
-	// Right Side
-	glVertex3f(1.0f, 1.0f, 1.0f);
-	glVertex3f(1.0f, -1.0f, 1.0f);
-	glVertex3f(1.0f, -1.0f, -1.0f);
-	glVertex3f(1.0f, 1.0f, -1.0f);
 	glEnd();
+}
+
+void renderPoints(struct CustomAVLTreeNode* root) {
+	//***************Inorder Traversal of Custom AVL Tree**********************
+	if (root != NULL) {
+		renderPoints(root->left);
+		struct LinkedListNode* temporary_node = root->head_node;
+		while (temporary_node != NULL) {
+			glVertex3f(temporary_node->x + x_offset, temporary_node->y + y_offset, temporary_node->z + z_offset);
+			temporary_node = temporary_node->next;
+		}
+		renderPoints(root->right);
+	}
 }
