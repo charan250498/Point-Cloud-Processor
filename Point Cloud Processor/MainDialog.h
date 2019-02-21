@@ -10,7 +10,7 @@
 class MainDialog : public CDialogEx
 {
 	DECLARE_DYNAMIC(MainDialog)
-
+	
 private:
 	OpenGLControl m_oglWindow;
 

@@ -127,7 +127,7 @@ void OpenGLControl::oglInitialize(void)
 		x_offset = x_min + (double)(-(x_max - x_min) / 2);
 	}
 	else {
-		x_offset = 0;
+		x_offset = -1 * (x_min + (double)((x_max - x_min) / 2));
 	}
 		//y_offset
 	if (y_min > 0 && y_max > 0) {
@@ -137,7 +137,7 @@ void OpenGLControl::oglInitialize(void)
 		y_offset = y_min + (double)(-(y_max - y_min) / 2);
 	}
 	else {
-		y_offset = 0;
+		y_offset = -1 * (y_min + (double)((y_max - y_min) / 2));
 	}
 		//z_offset
 	if (z_min > 0 && z_max > 0) {
@@ -147,15 +147,20 @@ void OpenGLControl::oglInitialize(void)
 		z_offset = z_min + (double)(-(z_max - z_min) / 2);
 	}
 	else {
-		z_offset = 0;
+		z_offset = -1 * (z_min + (double)((z_max - z_min) / 2));
 	}
+		//***********************************************************************************
+
+		//**************************Zoom Factor Calculation**********************************
+		//This calculation of zoom factor is relative to a study on an exisiting point cloud and not a general one.
+	m_fZoom = (float)(((x_max - x_min) * 50) / 20.325);
 		//***********************************************************************************
 	//***************************************************************************************
 
 	// Basic Setup:
 	//
 	// Set color to use when clearing the background.
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 	glClearDepth(1.0f);
 
 	// Turn on backface culling
@@ -321,7 +326,7 @@ void OpenGLControl::oglDrawScene(void)
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 	glBegin(GL_POINTS);
-	glColor3f(1.0, 1.0, 1.0);
+	glPointSize(1.0);
 
 	renderPoints(x_tree->root);
 
@@ -333,10 +338,16 @@ void renderPoints(struct CustomAVLTreeNode* root) {
 	if (root != NULL) {
 		renderPoints(root->left);
 		struct LinkedListNode* temporary_node = root->head_node;
+		double depth_color_value;
 		while (temporary_node != NULL) {
+			//color range normalization to 0.05 to 0.8
+			depth_color_value = (GLfloat)(0.8 - (((0.8 - 0.05)*(temporary_node->y - y_min)) / (y_max - y_min)));
+			glColor3f(depth_color_value, depth_color_value, depth_color_value);
+			//point alignment and rendering
 			glVertex3f(temporary_node->x + x_offset, temporary_node->y + y_offset, temporary_node->z + z_offset);
 			temporary_node = temporary_node->next;
 		}
 		renderPoints(root->right);
 	}
+	//************************************************************************
 }
