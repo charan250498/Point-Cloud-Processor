@@ -7,8 +7,11 @@
 
 //*****************Global Variables of other files************
 extern CString file_path;
+extern struct LinkedListNode *highlighted_points ;
 CustomAVLTree *x_tree = new CustomAVLTree();
 CustomAVLTree *z_tree = new CustomAVLTree();
+CustomAVLTree *y_tree = new CustomAVLTree();
+struct LinkedListNode *highlight_points = NULL;
 double x_min = 9999, x_max = -9999;
 double y_min = 9999, y_max = -9999;
 double z_min = 9999, z_max = -9999;
@@ -115,6 +118,7 @@ void OpenGLControl::oglInitialize(void)
 		//***********************************************************************************
 		x_tree->root = x_tree->insert(x_tree->root, x, x, y, z);
 		z_tree->root = z_tree->insert(z_tree->root, z, x, y, z);
+		y_tree->root = y_tree->insert(y_tree->root, y, x, y, z);
 	}
 	fin.close();
 
@@ -329,7 +333,15 @@ void OpenGLControl::oglDrawScene(void)
 	glPointSize(1.0);
 
 	renderPoints(x_tree->root);
-
+	highlight_points = highlighted_points;
+	if (highlighted_points != NULL) {
+		glColor3f(0.02353, 0.41961, 0.313);
+		glPointSize(0.0);
+		while (highlight_points != NULL) {
+			glVertex3f(highlight_points->x + x_offset, highlight_points->y + y_offset, highlight_points->z + z_offset);
+			highlight_points = highlight_points->next;
+		}
+	}
 	glEnd();
 }
 

@@ -27,6 +27,7 @@ public:
 	struct CustomAVLTreeNode* leftRotate(struct CustomAVLTreeNode *x);
 	int getBalance(struct CustomAVLTreeNode *N);
 	struct CustomAVLTreeNode* insert(struct CustomAVLTreeNode* node, double coordinate_value, double x, double y, double z);
+	struct LinkedListNode* searchPoint(struct CustomAVLTreeNode* root, double x, double y, double z);
 
 	void preOrder(struct CustomAVLTreeNode *root);
 };

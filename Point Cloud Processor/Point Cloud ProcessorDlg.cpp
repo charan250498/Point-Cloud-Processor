@@ -9,6 +9,7 @@
 //*************************Newly Added header files***********************
 #include <fstream>
 #include "MainDialog.h"
+#include <afxwin.h>
 //************************************************************************
 
 #ifdef _DEBUG
@@ -171,9 +172,14 @@ void CPointCloudProcessorDlg::OnBnClickedButton1()
 	// TODO: Add your control notification handler code here
 	UpdateData();
 	file_path = m_edit_browse_control_string;
-	OnOK();
-	MainDialog main_dialog;
-	main_dialog.DoModal();
+	if (m_edit_browse_control_string == L"") {
+		AfxMessageBox(L"Please provide a .TXT File to load");
+	}
+	else {
+		OnOK();
+		MainDialog main_dialog;
+		main_dialog.DoModal();
+	}
 }
 
 

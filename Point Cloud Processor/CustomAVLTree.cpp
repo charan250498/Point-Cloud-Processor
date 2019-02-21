@@ -135,3 +135,139 @@ void CustomAVLTree::preOrder(struct CustomAVLTreeNode* root) {
 		preOrder(root->right);
 	}
 }
+
+struct LinkedListNode* CustomAVLTree::searchPoint(struct CustomAVLTreeNode* root, double x, double y, double z) {
+	struct LinkedListNode* searched_points = NULL;
+	struct CustomAVLTreeNode* tree_node = root;
+	if ((x == 9999 && y == 9999) || (y == 9999 && z == 9999) || (z == 9999 && x == 9999)) {
+		if (x != 9999) {
+			while (tree_node != NULL) {
+				if (tree_node->coordinate_value == x) {
+					searched_points = tree_node->head_node;
+					break;
+				}
+				else if (tree_node->coordinate_value < x) {
+					tree_node = tree_node->right;
+				}
+				else {
+					tree_node = tree_node->left;
+				}
+			}
+		}
+		else if (y != 9999) {
+			while (tree_node != NULL) {
+				if (tree_node->coordinate_value == y) {
+					searched_points = tree_node->head_node;
+					break;
+				}
+				else if (tree_node->coordinate_value < y) {
+					tree_node = tree_node->right;
+				}
+				else {
+					tree_node = tree_node->left;
+				}
+			}
+		}
+		else {
+			while (tree_node != NULL) {
+				if (tree_node->coordinate_value == z) {
+					searched_points = tree_node->head_node;
+					break;
+				}
+				else if (tree_node->coordinate_value < z) {
+					tree_node = tree_node->right;
+				}
+				else {
+					tree_node = tree_node->left;
+				}
+			}
+		}
+	}
+	else if (x == 9999 || y == 9999 || z == 9999) {
+		searched_points = (struct LinkedListNode*)malloc(sizeof(struct LinkedListNode));
+		struct LinkedListNode* temporary_node;
+		if (x == 9999) {
+			while (tree_node != NULL) {
+				if (tree_node->coordinate_value == z) {
+					temporary_node = tree_node->head_node;
+					while (temporary_node != NULL) {
+						if (temporary_node->y == y) {
+							searched_points->x = temporary_node->x;
+							searched_points->y = temporary_node->y;
+							searched_points->z = temporary_node->z;
+							searched_points->next = NULL;
+							break;
+						}
+						else {
+							temporary_node = temporary_node->next;
+						}
+					}
+				}
+				else if (tree_node->coordinate_value > z) {
+					tree_node = tree_node->left;
+				}
+				else {
+					tree_node = tree_node->right;
+				}
+			}
+		}
+		else if (y == 9999) {
+			while (tree_node != NULL) {
+				if (tree_node->coordinate_value == x) {
+					temporary_node = tree_node->head_node;
+					while (temporary_node != NULL) {
+						if (temporary_node->z == z) {
+							searched_points->x = temporary_node->x;
+							searched_points->y = temporary_node->y;
+							searched_points->z = temporary_node->z;
+							searched_points->next = NULL;
+							break;
+						}
+						else {
+							temporary_node = temporary_node->next;
+						}
+					}
+				}
+				else if (tree_node->coordinate_value > x) {
+					tree_node = tree_node->left;
+				}
+				else {
+					tree_node = tree_node->right;
+				}
+			}
+		}
+		else {
+			while (tree_node != NULL) {
+				if (tree_node->coordinate_value == x) {
+					temporary_node = tree_node->head_node;
+					while (temporary_node != NULL) {
+						if (temporary_node->y == y) {
+							searched_points->x = temporary_node->x;
+							searched_points->y = temporary_node->y;
+							searched_points->z = temporary_node->z;
+							searched_points->next = NULL;
+							break;
+						}
+						else {
+							temporary_node = temporary_node->next;
+						}
+					}
+				}
+				else if (tree_node->coordinate_value > x) {
+					tree_node = tree_node->left;
+				}
+				else {
+					tree_node = tree_node->right;
+				}
+			}
+		}
+	}
+	else {
+		searched_points = (struct LinkedListNode*)malloc(sizeof(struct LinkedListNode));
+		searched_points->x = x;
+		searched_points->y = y;
+		searched_points->z = z;
+		searched_points->next = NULL;
+	}
+	return searched_points;
+}
