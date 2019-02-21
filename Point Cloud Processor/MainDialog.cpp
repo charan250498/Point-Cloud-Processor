@@ -49,6 +49,7 @@ void MainDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_CHECK1, x_check_box_value);
 	DDX_Check(pDX, IDC_CHECK2, y_check_box_value);
 	DDX_Check(pDX, IDC_CHECK3, z_check_box_value);
+	DDX_Control(pDX, IDC_BUTTON1, m_get_points_button_control);
 }
 
 
@@ -152,6 +153,8 @@ void MainDialog::OnBnClickedCheck1()
 	// TODO: Add your control notification handler code here
 	UpdateData();
 	x_edit_control.EnableWindow(x_check_box_value);
+	m_get_points_button_control.EnableWindow(x_check_box_value);
+	//UpdateData(false);
 }
 
 
@@ -160,6 +163,8 @@ void MainDialog::OnBnClickedCheck2()
 	// TODO: Add your control notification handler code here
 	UpdateData();
 	y_edit_control.EnableWindow(y_check_box_value);
+	m_get_points_button_control.EnableWindow(y_check_box_value);
+	//UpdateData(false);
 }
 
 
@@ -168,6 +173,8 @@ void MainDialog::OnBnClickedCheck3()
 	// TODO: Add your control notification handler code here
 	UpdateData();
 	z_edit_control.EnableWindow(z_check_box_value);
+	m_get_points_button_control.EnableWindow(z_check_box_value);
+	//UpdateData(false);
 }
 
 
@@ -178,15 +185,18 @@ void MainDialog::OnBnClickedButton1()
 	if ((x_check_box_value && y_check_box_value) || (y_check_box_value && z_check_box_value) || (x_check_box_value && z_check_box_value)) {
 		if (x_check_box_value && y_check_box_value) {
 			highlighted_points = x_tree->searchPoint(x_tree->root, x_edit_control_value, y_edit_control_value, (double)9999);
+			z_edit_control_value = highlighted_points->z;
 		}
 		else if (y_check_box_value && z_check_box_value) {
 			highlighted_points = z_tree->searchPoint(z_tree->root, (double)9999, y_edit_control_value, z_edit_control_value);
+			x_edit_control_value = highlighted_points->x;
 		}
 		else {
 			highlighted_points = x_tree->searchPoint(x_tree->root, x_edit_control_value, (double)9999, z_edit_control_value);
+			y_edit_control_value = highlighted_points->y;
 		}
 	}
-	else if(x_check_box_value || y_check_box_value || z_check_box_value) {
+	else if (x_check_box_value || y_check_box_value || z_check_box_value) {
 		if (x_check_box_value) {
 			highlighted_points = x_tree->searchPoint(x_tree->root, x_edit_control_value, (double)9999, (double)9999);
 		}
@@ -199,6 +209,7 @@ void MainDialog::OnBnClickedButton1()
 	}
 	else {
 		highlighted_points = x_tree->searchPoint(x_tree->root, x_edit_control_value, y_edit_control_value, z_edit_control_value);
+
 	}
 	UpdateData(false);
 }

@@ -46,4 +46,5 @@ public:
 	afx_msg void OnBnClickedCheck2();
 	afx_msg void OnBnClickedCheck3();
 	afx_msg void OnBnClickedButton1();
+	CButton m_get_points_button_control;
 };

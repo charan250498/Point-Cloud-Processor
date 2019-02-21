@@ -326,19 +326,70 @@ void OpenGLControl::OnMouseMove(UINT nFlags, CPoint point)
 
 void OpenGLControl::oglDrawScene(void)
 {
-	// Wireframe Mode
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 	glBegin(GL_POINTS);
 	glPointSize(1.0);
 
 	renderPoints(x_tree->root);
+	glEnd();
+
+	//Rendering the Highlighted section.
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+	glBegin(GL_QUADS);
 	highlight_points = highlighted_points;
+	GLfloat x_coordinate;
+	GLfloat y_coordinate;
+	GLfloat z_coordinate;
+	//determines the cube size
+	GLfloat cube_size_offset = 0.1f;
 	if (highlighted_points != NULL) {
-		glColor3f(0.02353, 0.41961, 0.313);
-		glPointSize(0.0);
+		//Different color for highlighting Turquoise Green
+		glColor3f(0.06667, 0.57647, 0.443137);
+		//glPointSize(0.0);
 		while (highlight_points != NULL) {
-			glVertex3f(highlight_points->x + x_offset, highlight_points->y + y_offset, highlight_points->z + z_offset);
+			x_coordinate = highlight_points->x + x_offset;
+			y_coordinate = highlight_points->y + y_offset;
+			z_coordinate = highlight_points->z + z_offset;
+
+			//Cube Rendering
+			//Top Side
+			glVertex3f(x_coordinate + cube_size_offset, y_coordinate + cube_size_offset, z_coordinate + cube_size_offset);
+			glVertex3f(x_coordinate + cube_size_offset, y_coordinate + cube_size_offset, z_coordinate - cube_size_offset);
+			glVertex3f(x_coordinate - cube_size_offset, y_coordinate + cube_size_offset, z_coordinate - cube_size_offset);
+			glVertex3f(x_coordinate - cube_size_offset, y_coordinate + cube_size_offset, z_coordinate + cube_size_offset);
+
+			//Bottom Side
+			glVertex3f(x_coordinate - cube_size_offset, y_coordinate - cube_size_offset, z_coordinate - cube_size_offset);
+			glVertex3f(x_coordinate + cube_size_offset, y_coordinate - cube_size_offset, z_coordinate - cube_size_offset);
+			glVertex3f(x_coordinate + cube_size_offset, y_coordinate - cube_size_offset, z_coordinate + cube_size_offset);
+			glVertex3f(x_coordinate - cube_size_offset, y_coordinate - cube_size_offset, z_coordinate + cube_size_offset);
+
+			//Front Side
+			glVertex3f(x_coordinate + cube_size_offset, y_coordinate + cube_size_offset, z_coordinate + cube_size_offset);
+			glVertex3f(x_coordinate - cube_size_offset, y_coordinate + cube_size_offset, z_coordinate + cube_size_offset);
+			glVertex3f(x_coordinate - cube_size_offset, y_coordinate - cube_size_offset, z_coordinate + cube_size_offset);
+			glVertex3f(x_coordinate + cube_size_offset, y_coordinate - cube_size_offset, z_coordinate + cube_size_offset);
+
+			//Rear Side
+			glVertex3f(x_coordinate - cube_size_offset, y_coordinate - cube_size_offset, z_coordinate - cube_size_offset);
+			glVertex3f(x_coordinate - cube_size_offset, y_coordinate + cube_size_offset, z_coordinate - cube_size_offset);
+			glVertex3f(x_coordinate + cube_size_offset, y_coordinate + cube_size_offset, z_coordinate - cube_size_offset);
+			glVertex3f(x_coordinate + cube_size_offset, y_coordinate - cube_size_offset, z_coordinate - cube_size_offset);
+
+			//Left Side
+			glVertex3f(x_coordinate - cube_size_offset, y_coordinate - cube_size_offset, z_coordinate - cube_size_offset);
+			glVertex3f(x_coordinate - cube_size_offset, y_coordinate - cube_size_offset, z_coordinate + cube_size_offset);
+			glVertex3f(x_coordinate - cube_size_offset, y_coordinate + cube_size_offset, z_coordinate + cube_size_offset);
+			glVertex3f(x_coordinate - cube_size_offset, y_coordinate + cube_size_offset, z_coordinate - cube_size_offset);
+
+			//Right Side
+			glVertex3f(x_coordinate + cube_size_offset, y_coordinate + cube_size_offset, z_coordinate + cube_size_offset);
+			glVertex3f(x_coordinate + cube_size_offset, y_coordinate - cube_size_offset, z_coordinate + cube_size_offset);
+			glVertex3f(x_coordinate + cube_size_offset, y_coordinate - cube_size_offset, z_coordinate - cube_size_offset);
+			glVertex3f(x_coordinate + cube_size_offset, y_coordinate + cube_size_offset, z_coordinate - cube_size_offset);
+
 			highlight_points = highlight_points->next;
 		}
 	}
