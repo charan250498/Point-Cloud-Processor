@@ -135,7 +135,7 @@ BOOL MainDialog::OnInitDialog()
 	m_rich_edit_control_value = file_content;
 	UpdateData(false);
 	//***************************************************************************
-
+	ShowWindow(SW_SHOW);
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
 
@@ -203,27 +203,27 @@ void MainDialog::OnBnClickedButton1()
 	UpdateData();
 	if ((x_check_box_value && y_check_box_value) || (y_check_box_value && z_check_box_value) || (x_check_box_value && z_check_box_value)) {
 		if (x_check_box_value && y_check_box_value) {
-			highlighted_points = x_tree->searchPoint(x_tree->root, x_edit_control_value, y_edit_control_value, (double)9999);
+			highlighted_points = x_tree->searchPoint(x_tree->root, x_edit_control_value, y_edit_control_value, (float)9999);
 			z_edit_control_value = highlighted_points->z;
 		}
 		else if (y_check_box_value && z_check_box_value) {
-			highlighted_points = z_tree->searchPoint(z_tree->root, (double)9999, y_edit_control_value, z_edit_control_value);
+			highlighted_points = z_tree->searchPoint(z_tree->root, (float)9999, y_edit_control_value, z_edit_control_value);
 			x_edit_control_value = highlighted_points->x;
 		}
 		else {
-			highlighted_points = x_tree->searchPoint(x_tree->root, x_edit_control_value, (double)9999, z_edit_control_value);
+			highlighted_points = x_tree->searchPoint(x_tree->root, x_edit_control_value, (float)9999, z_edit_control_value);
 			y_edit_control_value = highlighted_points->y;
 		}
 	}
 	else if (x_check_box_value || y_check_box_value || z_check_box_value) {
 		if (x_check_box_value) {
-			highlighted_points = x_tree->searchPoint(x_tree->root, x_edit_control_value, (double)9999, (double)9999);
+			highlighted_points = x_tree->searchPoint(x_tree->root, x_edit_control_value, (float)9999, (float)9999);
 		}
 		else if (y_check_box_value) {
-			highlighted_points = y_tree->searchPoint(y_tree->root, (double)9999, y_edit_control_value, (double)9999);
+			highlighted_points = y_tree->searchPoint(y_tree->root, (float)9999, y_edit_control_value, (float)9999);
 		}
 		else {
-			highlighted_points = z_tree->searchPoint(z_tree->root, (double)9999, (double)9999, z_edit_control_value);
+			highlighted_points = z_tree->searchPoint(z_tree->root, (float)9999, (float)9999, z_edit_control_value);
 		}
 	}
 	else {

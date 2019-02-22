@@ -36,9 +36,9 @@ public:
 	CEdit x_edit_control;
 	CEdit y_edit_control;
 	CEdit z_edit_control;
-	double x_edit_control_value;
-	double y_edit_control_value;
-	double z_edit_control_value;
+	float x_edit_control_value;
+	float y_edit_control_value;
+	float z_edit_control_value;
 	BOOL x_check_box_value;
 	BOOL y_check_box_value;
 	BOOL z_check_box_value;

@@ -25,7 +25,7 @@ int CustomAVLTree::height(struct CustomAVLTreeNode *Node) {
 	return Node->height;
 }
 
-struct CustomAVLTreeNode* CustomAVLTree::newNode(double coordinate_value, double x, double y, double z) {
+struct CustomAVLTreeNode* CustomAVLTree::newNode(float coordinate_value, float x, float y, float z) {
 	struct CustomAVLTreeNode* node = (struct CustomAVLTreeNode*)malloc(sizeof(struct CustomAVLTreeNode));
 	struct LinkedListNode* linked_list_node = (struct LinkedListNode*)malloc(sizeof(struct LinkedListNode));
 	node->coordinate_value = coordinate_value;
@@ -73,7 +73,7 @@ int CustomAVLTree::getBalance(struct CustomAVLTreeNode *N) {
 	return height(N->left) - height(N->right);
 }
 
-struct CustomAVLTreeNode* CustomAVLTree::insert(struct CustomAVLTreeNode* node, double coordinate_value, double x, double y, double z) {
+struct CustomAVLTreeNode* CustomAVLTree::insert(struct CustomAVLTreeNode* node, float coordinate_value, float x, float y, float z) {
 	if (node == NULL) {
 		return(newNode(coordinate_value, x, y, z));
 	}
@@ -136,7 +136,7 @@ void CustomAVLTree::preOrder(struct CustomAVLTreeNode* root) {
 	}
 }
 
-struct LinkedListNode* CustomAVLTree::searchPoint(struct CustomAVLTreeNode* root, double x, double y, double z) {
+struct LinkedListNode* CustomAVLTree::searchPoint(struct CustomAVLTreeNode* root, float x, float y, float z) {
 	struct LinkedListNode* searched_points = NULL;
 	struct CustomAVLTreeNode* tree_node = root;
 	int flag = 0;

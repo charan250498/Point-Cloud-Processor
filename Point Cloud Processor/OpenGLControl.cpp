@@ -12,11 +12,11 @@ CustomAVLTree *x_tree = new CustomAVLTree();
 CustomAVLTree *z_tree = new CustomAVLTree();
 CustomAVLTree *y_tree = new CustomAVLTree();
 struct LinkedListNode *highlight_points = NULL;
-double x_min = 9999, x_max = -9999;
-double y_min = 9999, y_max = -9999;
-double z_min = 9999, z_max = -9999;
+float x_min = 9999, x_max = -9999;
+float y_min = 9999, y_max = -9999;
+float z_min = 9999, z_max = -9999;
 
-double x_offset, y_offset, z_offset;
+float x_offset, y_offset, z_offset;
 
 void renderPoints(struct CustomAVLTreeNode*);
 //************************************************************
@@ -103,7 +103,7 @@ void OpenGLControl::oglInitialize(void)
 	wglMakeCurrent(hdc, hrc);
 
 	//**********************Reading Point Cloud into Customized AVL Tree*********************
-	double x, y, z;
+	float x, y, z;
 	int intensity;
 	std::fstream fin;
 	fin.open(file_path);
@@ -125,33 +125,33 @@ void OpenGLControl::oglInitialize(void)
 		//**************************Offset Calculation***************************************
 		//x_offset
 	if (x_min > 0 && x_max > 0) {
-		x_offset = -x_min - (double)((x_max - x_min) / 2);
+		x_offset = -x_min - (float)((x_max - x_min) / 2);
 	}
 	else if (x_min < 0 && x_max < 0) {
-		x_offset = x_min + (double)(-(x_max - x_min) / 2);
+		x_offset = x_min + (float)(-(x_max - x_min) / 2);
 	}
 	else {
-		x_offset = -1 * (x_min + (double)((x_max - x_min) / 2));
+		x_offset = -1 * (x_min + (float)((x_max - x_min) / 2));
 	}
 		//y_offset
 	if (y_min > 0 && y_max > 0) {
-		y_offset = -y_min - (double)((y_max - y_min) / 2);
+		y_offset = -y_min - (float)((y_max - y_min) / 2);
 	}
 	else if (y_min < 0 && y_max < 0) {
-		y_offset = y_min + (double)(-(y_max - y_min) / 2);
+		y_offset = y_min + (float)(-(y_max - y_min) / 2);
 	}
 	else {
-		y_offset = -1 * (y_min + (double)((y_max - y_min) / 2));
+		y_offset = -1 * (y_min + (float)((y_max - y_min) / 2));
 	}
 		//z_offset
 	if (z_min > 0 && z_max > 0) {
-		z_offset = -z_min - (double)((z_max - z_min) / 2);
+		z_offset = -z_min - (float)((z_max - z_min) / 2);
 	}
 	else if (z_min < 0 && z_max < 0) {
-		z_offset = z_min + (double)(-(z_max - z_min) / 2);
+		z_offset = z_min + (float)(-(z_max - z_min) / 2);
 	}
 	else {
-		z_offset = -1 * (z_min + (double)((z_max - z_min) / 2));
+		z_offset = -1 * (z_min + (float)((z_max - z_min) / 2));
 	}
 		//***********************************************************************************
 
@@ -346,7 +346,7 @@ void OpenGLControl::oglDrawScene(void)
 	GLfloat cube_size_offset = 0.1f;
 	if (highlighted_points != NULL) {
 		//Different color for highlighting Turquoise Green
-		glColor3f(0.06667, 0.57647, 0.443137);
+		glColor3f((GLfloat)(0.06667), (GLfloat)(0.57647), (GLfloat)(0.443137));
 		//glPointSize(0.0);
 		while (highlight_points != NULL) {
 			x_coordinate = highlight_points->x + x_offset;
@@ -401,7 +401,7 @@ void renderPoints(struct CustomAVLTreeNode* root) {
 	if (root != NULL) {
 		renderPoints(root->left);
 		struct LinkedListNode* temporary_node = root->head_node;
-		double depth_color_value;
+		float depth_color_value;
 		while (temporary_node != NULL) {
 			//color range normalization to 0.05 to 0.8
 			depth_color_value = (GLfloat)(0.8 - (((0.8 - 0.05)*(temporary_node->y - y_min)) / (y_max - y_min)));

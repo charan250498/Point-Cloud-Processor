@@ -49,7 +49,9 @@ BOOL CPointCloudProcessorApp::InitInstance()
 	InitCtrls.dwICC = ICC_WIN95_CLASSES;
 	InitCommonControlsEx(&InitCtrls);
 
+	//**********************Newly Added for Rich Text***********************
 	::AfxInitRichEdit2();
+	//**********************************************************************
 	CWinApp::InitInstance();
 
 	
