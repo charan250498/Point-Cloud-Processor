@@ -8,12 +8,15 @@
 
 //******************Newly Added Header Files***********************
 #include "CustomAVLTree.h"
+#include <fstream>
+#include <string>
 //*****************************************************************
 
 //******************Global variables*******************************
 extern CustomAVLTree *x_tree;
 extern CustomAVLTree *z_tree;
 extern CustomAVLTree *y_tree;
+extern CString file_path;
 struct LinkedListNode *highlighted_points = NULL;
 //*****************************************************************
 
@@ -29,6 +32,7 @@ MainDialog::MainDialog(CWnd* pParent /*=nullptr*/)
 	, x_check_box_value(FALSE)
 	, y_check_box_value(FALSE)
 	, z_check_box_value(FALSE)
+	, m_rich_edit_control_value(_T(""))
 {
 
 }
@@ -50,6 +54,8 @@ void MainDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_CHECK2, y_check_box_value);
 	DDX_Check(pDX, IDC_CHECK3, z_check_box_value);
 	DDX_Control(pDX, IDC_BUTTON1, m_get_points_button_control);
+	DDX_Control(pDX, IDC_RICHEDIT21, m_rich_edit_control);
+	DDX_Text(pDX, IDC_RICHEDIT21, m_rich_edit_control_value);
 }
 
 
@@ -115,6 +121,19 @@ BOOL MainDialog::OnInitDialog()
 
 	// Setup the OpenGL Window's timer to render
 	m_oglWindow.m_unpTimer = m_oglWindow.SetTimer(1, 1, 0);
+
+	//Rich Edit Control content
+	CString file_content;
+	std::ifstream fin(file_path);
+	std::string line;
+	if (fin.is_open()) {
+		while (std::getline(fin, line)) {
+			file_content += CString(line.c_str()) + CString("\n");
+		}
+		fin.close();
+	}
+	m_rich_edit_control_value = file_content;
+	UpdateData(false);
 	//***************************************************************************
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
@@ -153,7 +172,7 @@ void MainDialog::OnBnClickedCheck1()
 	// TODO: Add your control notification handler code here
 	UpdateData();
 	x_edit_control.EnableWindow(x_check_box_value);
-	m_get_points_button_control.EnableWindow(x_check_box_value);
+	m_get_points_button_control.EnableWindow(x_check_box_value || y_check_box_value || z_check_box_value);
 	//UpdateData(false);
 }
 
@@ -163,7 +182,7 @@ void MainDialog::OnBnClickedCheck2()
 	// TODO: Add your control notification handler code here
 	UpdateData();
 	y_edit_control.EnableWindow(y_check_box_value);
-	m_get_points_button_control.EnableWindow(y_check_box_value);
+	m_get_points_button_control.EnableWindow(x_check_box_value || y_check_box_value || z_check_box_value);
 	//UpdateData(false);
 }
 
@@ -173,7 +192,7 @@ void MainDialog::OnBnClickedCheck3()
 	// TODO: Add your control notification handler code here
 	UpdateData();
 	z_edit_control.EnableWindow(z_check_box_value);
-	m_get_points_button_control.EnableWindow(z_check_box_value);
+	m_get_points_button_control.EnableWindow(x_check_box_value || y_check_box_value || z_check_box_value);
 	//UpdateData(false);
 }
 
