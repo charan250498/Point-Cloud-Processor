@@ -35,4 +35,5 @@ public:
 	afx_msg void OnBnClickedButton1();
 	CString m_edit_browse_control_string;
 	afx_msg void OnBnClickedButton2();
+	CButton m_load_file_button_control;
 };

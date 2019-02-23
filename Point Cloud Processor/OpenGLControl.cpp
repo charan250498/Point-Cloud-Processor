@@ -15,6 +15,8 @@ struct LinkedListNode *highlight_points = NULL;
 float x_min = 9999, x_max = -9999;
 float y_min = 9999, y_max = -9999;
 float z_min = 9999, z_max = -9999;
+//determines the cube size
+GLfloat cube_size_offset = 0.1f;
 
 float x_offset, y_offset, z_offset;
 
@@ -342,8 +344,7 @@ void OpenGLControl::oglDrawScene(void)
 	GLfloat x_coordinate;
 	GLfloat y_coordinate;
 	GLfloat z_coordinate;
-	//determines the cube size
-	GLfloat cube_size_offset = 0.1f;
+	
 	if (highlighted_points != NULL) {
 		//Different color for highlighting Turquoise Green
 		glColor3f((GLfloat)(0.06667), (GLfloat)(0.57647), (GLfloat)(0.443137));

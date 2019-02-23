@@ -49,4 +49,8 @@ public:
 	CButton m_get_points_button_control;
 	CRichEditCtrl m_rich_edit_control;
 	CString m_rich_edit_control_value;
+	afx_msg void OnBnClickedMfcbutton2();
+	afx_msg void OnBnClickedMfcbutton3();
+	CMFCButton increase_point_size_button_control;
+	CMFCButton decrease_point_size_button_control;
 };

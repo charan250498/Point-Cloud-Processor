@@ -17,6 +17,7 @@ extern CustomAVLTree *x_tree;
 extern CustomAVLTree *z_tree;
 extern CustomAVLTree *y_tree;
 extern CString file_path;
+extern GLfloat cube_size_offset;
 struct LinkedListNode *highlighted_points = NULL;
 //*****************************************************************
 
@@ -56,6 +57,8 @@ void MainDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_BUTTON1, m_get_points_button_control);
 	DDX_Control(pDX, IDC_RICHEDIT21, m_rich_edit_control);
 	DDX_Text(pDX, IDC_RICHEDIT21, m_rich_edit_control_value);
+	DDX_Control(pDX, IDC_MFCBUTTON2, increase_point_size_button_control);
+	DDX_Control(pDX, IDC_MFCBUTTON3, decrease_point_size_button_control);
 }
 
 
@@ -65,6 +68,8 @@ BEGIN_MESSAGE_MAP(MainDialog, CDialog)
 	ON_BN_CLICKED(IDC_CHECK2, &MainDialog::OnBnClickedCheck2)
 	ON_BN_CLICKED(IDC_CHECK3, &MainDialog::OnBnClickedCheck3)
 	ON_BN_CLICKED(IDC_BUTTON1, &MainDialog::OnBnClickedButton1)
+	ON_BN_CLICKED(IDC_MFCBUTTON2, &MainDialog::OnBnClickedMfcbutton2)
+	ON_BN_CLICKED(IDC_MFCBUTTON3, &MainDialog::OnBnClickedMfcbutton3)
 END_MESSAGE_MAP()
 
 
@@ -136,7 +141,7 @@ BOOL MainDialog::OnInitDialog()
 	UpdateData(false);
 	//***************************************************************************
 	ShowWindow(SW_SHOW);
-	return TRUE;  // return TRUE  unless you set the focus to a control
+	return FALSE;  // return TRUE  unless you set the focus to a control
 }
 
 void MainDialog::OnSize(UINT nType, int cx, int cy)
@@ -173,6 +178,9 @@ void MainDialog::OnBnClickedCheck1()
 	UpdateData();
 	x_edit_control.EnableWindow(x_check_box_value);
 	m_get_points_button_control.EnableWindow(x_check_box_value || y_check_box_value || z_check_box_value);
+	if (x_check_box_value || y_check_box_value || z_check_box_value) {
+		m_get_points_button_control.SetFocus();
+	}
 	//UpdateData(false);
 }
 
@@ -183,6 +191,9 @@ void MainDialog::OnBnClickedCheck2()
 	UpdateData();
 	y_edit_control.EnableWindow(y_check_box_value);
 	m_get_points_button_control.EnableWindow(x_check_box_value || y_check_box_value || z_check_box_value);
+	if (x_check_box_value || y_check_box_value || z_check_box_value) {
+		m_get_points_button_control.SetFocus();
+	}
 	//UpdateData(false);
 }
 
@@ -193,6 +204,9 @@ void MainDialog::OnBnClickedCheck3()
 	UpdateData();
 	z_edit_control.EnableWindow(z_check_box_value);
 	m_get_points_button_control.EnableWindow(x_check_box_value || y_check_box_value || z_check_box_value);
+	if (x_check_box_value || y_check_box_value || z_check_box_value) {
+		m_get_points_button_control.SetFocus();
+	}
 	//UpdateData(false);
 }
 
@@ -204,31 +218,87 @@ void MainDialog::OnBnClickedButton1()
 	if ((x_check_box_value && y_check_box_value) || (y_check_box_value && z_check_box_value) || (x_check_box_value && z_check_box_value)) {
 		if (x_check_box_value && y_check_box_value) {
 			highlighted_points = x_tree->searchPoint(x_tree->root, x_edit_control_value, y_edit_control_value, (float)9999);
-			z_edit_control_value = highlighted_points->z;
+			if (highlighted_points != NULL) {
+				z_edit_control_value = highlighted_points->z;
+				increase_point_size_button_control.EnableWindow(highlighted_points != NULL);
+				decrease_point_size_button_control.EnableWindow(highlighted_points != NULL);
+			}
+			else {
+				if (x_check_box_value && y_check_box_value && z_check_box_value) {
+					AfxMessageBox(L"Could not find X or Y or Z coordinate in the point cloud");
+				}
+				else {
+					AfxMessageBox(L"Could not find X or Y coordinate in the point cloud");
+				}
+			}
 		}
 		else if (y_check_box_value && z_check_box_value) {
 			highlighted_points = z_tree->searchPoint(z_tree->root, (float)9999, y_edit_control_value, z_edit_control_value);
-			x_edit_control_value = highlighted_points->x;
+			if (highlighted_points != NULL) {
+				x_edit_control_value = highlighted_points->x;
+			}
+			else {
+				AfxMessageBox(L"Could not find Y or Z coordinate in the point cloud");
+			}
 		}
 		else {
 			highlighted_points = x_tree->searchPoint(x_tree->root, x_edit_control_value, (float)9999, z_edit_control_value);
 			y_edit_control_value = highlighted_points->y;
+			if (highlighted_points != NULL) {
+				y_edit_control_value = highlighted_points->y;
+			}
+			else {
+				AfxMessageBox(L"Could not find X or Z coordinate in the point cloud");
+			}
 		}
 	}
 	else if (x_check_box_value || y_check_box_value || z_check_box_value) {
 		if (x_check_box_value) {
 			highlighted_points = x_tree->searchPoint(x_tree->root, x_edit_control_value, (float)9999, (float)9999);
+			if (highlighted_points == NULL) {
+				AfxMessageBox(L"Could not find the X coordinate in the point cloud");
+			}
 		}
 		else if (y_check_box_value) {
 			highlighted_points = y_tree->searchPoint(y_tree->root, (float)9999, y_edit_control_value, (float)9999);
+			if (highlighted_points == NULL) {
+				AfxMessageBox(L"Could not find the Y coordinate in the point cloud");
+			}
 		}
 		else {
 			highlighted_points = z_tree->searchPoint(z_tree->root, (float)9999, (float)9999, z_edit_control_value);
+			if (highlighted_points == NULL) {
+				AfxMessageBox(L"Could not find the Z coordinate in the point cloud");
+			}
 		}
 	}
 	else {
 		highlighted_points = x_tree->searchPoint(x_tree->root, x_edit_control_value, y_edit_control_value, z_edit_control_value);
 
 	}
+	increase_point_size_button_control.EnableWindow(highlighted_points != NULL);
+	decrease_point_size_button_control.EnableWindow(false);
 	UpdateData(false);
+}
+
+
+
+
+void MainDialog::OnBnClickedMfcbutton2()
+{
+	// TODO: Add your control notification handler code here
+	cube_size_offset += 0.1;
+	decrease_point_size_button_control.EnableWindow(true);
+}
+
+
+void MainDialog::OnBnClickedMfcbutton3()
+{
+	// TODO: Add your control notification handler code here
+	if (cube_size_offset >= (GLfloat)0.2) {
+		cube_size_offset -= 0.1;
+	}
+	else {
+		decrease_point_size_button_control.EnableWindow(false);
+	}
 }

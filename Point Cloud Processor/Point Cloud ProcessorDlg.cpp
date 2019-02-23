@@ -69,6 +69,7 @@ void CPointCloudProcessorDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Text(pDX, IDC_MFCEDITBROWSE1, m_edit_browse_control_string);
+	DDX_Control(pDX, IDC_BUTTON1, m_load_file_button_control);
 }
 
 BEGIN_MESSAGE_MAP(CPointCloudProcessorDlg, CDialogEx)
@@ -112,8 +113,9 @@ BOOL CPointCloudProcessorDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// Set small icon
 
 	// TODO: Add extra initialization here
+	m_load_file_button_control.SetFocus();
 
-	return TRUE;  // return TRUE  unless you set the focus to a control
+	return FALSE;  // return TRUE  unless you set the focus to a control
 }
 
 void CPointCloudProcessorDlg::OnSysCommand(UINT nID, LPARAM lParam)

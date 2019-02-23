@@ -142,9 +142,10 @@ struct LinkedListNode* CustomAVLTree::searchPoint(struct CustomAVLTreeNode* root
 	int flag = 0;
 	if ((x == 9999 && y == 9999) || (y == 9999 && z == 9999) || (z == 9999 && x == 9999)) {
 		if (x != 9999) {
-			while (tree_node != NULL) {
+			while (tree_node != NULL && flag != 1) {
 				if (tree_node->coordinate_value == x) {
 					searched_points = tree_node->head_node;
+					flag = 1;
 					break;
 				}
 				else if (tree_node->coordinate_value < x) {
@@ -154,11 +155,15 @@ struct LinkedListNode* CustomAVLTree::searchPoint(struct CustomAVLTreeNode* root
 					tree_node = tree_node->left;
 				}
 			}
+			if (flag == 0) {
+				return NULL;
+			}
 		}
 		else if (y != 9999) {
-			while (tree_node != NULL) {
+			while (tree_node != NULL && flag != 1) {
 				if (tree_node->coordinate_value == y) {
 					searched_points = tree_node->head_node;
+					flag = 1;
 					break;
 				}
 				else if (tree_node->coordinate_value < y) {
@@ -168,11 +173,15 @@ struct LinkedListNode* CustomAVLTree::searchPoint(struct CustomAVLTreeNode* root
 					tree_node = tree_node->left;
 				}
 			}
+			if (flag == 0) {
+				return NULL;
+			}
 		}
 		else {
-			while (tree_node != NULL) {
+			while (tree_node != NULL && flag != 1) {
 				if (tree_node->coordinate_value == z) {
 					searched_points = tree_node->head_node;
+						flag = 1;
 					break;
 				}
 				else if (tree_node->coordinate_value < z) {
@@ -181,6 +190,9 @@ struct LinkedListNode* CustomAVLTree::searchPoint(struct CustomAVLTreeNode* root
 				else {
 					tree_node = tree_node->left;
 				}
+			}
+			if (flag == 0) {
+				return NULL;
 			}
 		}
 	}
@@ -212,6 +224,9 @@ struct LinkedListNode* CustomAVLTree::searchPoint(struct CustomAVLTreeNode* root
 					tree_node = tree_node->right;
 				}
 			}
+			if (flag == 0) {
+				return NULL;
+			}
 		}
 		else if (y == 9999) {
 			while (tree_node != NULL && flag != 1) {
@@ -238,6 +253,9 @@ struct LinkedListNode* CustomAVLTree::searchPoint(struct CustomAVLTreeNode* root
 					tree_node = tree_node->right;
 				}
 			}
+			if (flag == 0) {
+				return NULL;
+			}
 		}
 		else {
 			while (tree_node != NULL && flag != 1) {
@@ -263,6 +281,9 @@ struct LinkedListNode* CustomAVLTree::searchPoint(struct CustomAVLTreeNode* root
 				else {
 					tree_node = tree_node->right;
 				}
+			}
+			if (flag == 0) {
+				return NULL;
 			}
 		}
 	}
