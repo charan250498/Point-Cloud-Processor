@@ -15,6 +15,12 @@ struct LinkedListNode *highlight_points = NULL;
 float x_min = 9999, x_max = -9999;
 float y_min = 9999, y_max = -9999;
 float z_min = 9999, z_max = -9999;
+
+//Zoom and refresh
+extern bool refresh_button_clicked;
+extern bool zoom_in_clicked;
+extern bool zoom_out_clicked;
+
 //determines the cube size
 GLfloat cube_size_offset = 0.1f;
 
@@ -328,6 +334,28 @@ void OpenGLControl::OnMouseMove(UINT nFlags, CPoint point)
 
 void OpenGLControl::oglDrawScene(void)
 {
+	//Zoom and Refresh checking.
+	if (zoom_in_clicked) {
+		if (m_fZoom > 15.0f) {
+			m_fZoom = m_fZoom - 10.0f;
+			OnDraw(NULL);
+		}
+		zoom_in_clicked = false;
+	}
+	if (zoom_out_clicked) {
+		m_fZoom += 10.0f;
+		OnDraw(NULL);
+		zoom_out_clicked = false;
+	}
+	if (refresh_button_clicked) {
+		m_fPosX = 0.0f;
+		m_fPosY = 0.0f;
+		m_fRotX = 0.0f;
+		m_fRotY = 0.0f;
+		OnDraw(NULL);
+		refresh_button_clicked = false;
+	}
+
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 	glBegin(GL_POINTS);

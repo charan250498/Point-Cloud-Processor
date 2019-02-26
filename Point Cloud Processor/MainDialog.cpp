@@ -19,6 +19,9 @@ extern CustomAVLTree *y_tree;
 extern CString file_path;
 extern GLfloat cube_size_offset;
 struct LinkedListNode *highlighted_points = NULL;
+bool refresh_button_clicked = false;
+bool zoom_in_clicked = false;
+bool zoom_out_clicked = false;
 //*****************************************************************
 
 // MainDialog dialog
@@ -71,6 +74,8 @@ BEGIN_MESSAGE_MAP(MainDialog, CDialog)
 	ON_BN_CLICKED(IDC_MFCBUTTON2, &MainDialog::OnBnClickedMfcbutton2)
 	ON_BN_CLICKED(IDC_MFCBUTTON3, &MainDialog::OnBnClickedMfcbutton3)
 	ON_BN_CLICKED(IDC_MFCBUTTON4, &MainDialog::OnBnClickedMfcbutton4)
+	ON_BN_CLICKED(IDC_MFCBUTTON6, &MainDialog::OnBnClickedMfcbutton6)
+	ON_BN_CLICKED(IDC_MFCBUTTON5, &MainDialog::OnBnClickedMfcbutton5)
 END_MESSAGE_MAP()
 
 
@@ -313,9 +318,20 @@ void MainDialog::OnBnClickedMfcbutton3()
 void MainDialog::OnBnClickedMfcbutton4()
 {
 	// TODO: Add your control notification handler code here
-	m_oglWindow.m_fPosX = 0.0f;
-	m_oglWindow.m_fPosY = 0.0f;
-	//m_oglWindow.m_fZoom = 50.0f;
-	m_oglWindow.m_fRotX = 0.0f;
-	m_oglWindow.m_fRotY = 0.0f;
+	refresh_button_clicked = true;
+}
+
+
+void MainDialog::OnBnClickedMfcbutton6()
+{
+	// TODO: Add your control notification handler code here
+	zoom_in_clicked = true;
+}
+
+
+void MainDialog::OnBnClickedMfcbutton5()
+{
+	// TODO: Add your control notification handler code here
+	
+	zoom_out_clicked = true;
 }
