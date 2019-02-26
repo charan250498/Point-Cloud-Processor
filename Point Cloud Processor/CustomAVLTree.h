@@ -3,14 +3,15 @@ struct LinkedListNode {
 	float x;
 	float y;
 	float z;
-	struct LinkedListNode *next;
+	struct LinkedListNode *right_next;
+	struct LinkedListNode *left_next;
 };
 struct CustomAVLTreeNode {
 	int height;
 	float coordinate_value;
 	struct LinkedListNode *head_node;
-	struct CustomAVLTreeNode *left;
-	struct CustomAVLTreeNode *right;
+	struct CustomAVLTreeNode *left = NULL;
+	struct CustomAVLTreeNode *right = NULL;
 };
 class CustomAVLTree
 {

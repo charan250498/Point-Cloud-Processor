@@ -391,7 +391,7 @@ void OpenGLControl::oglDrawScene(void)
 			glVertex3f(x_coordinate + cube_size_offset, y_coordinate - cube_size_offset, z_coordinate - cube_size_offset);
 			glVertex3f(x_coordinate + cube_size_offset, y_coordinate + cube_size_offset, z_coordinate - cube_size_offset);
 
-			highlight_points = highlight_points->next;
+			highlight_points = highlight_points->right_next;
 		}
 	}
 	glEnd();
@@ -409,7 +409,7 @@ void renderPoints(struct CustomAVLTreeNode* root) {
 			glColor3f(depth_color_value, depth_color_value, depth_color_value);
 			//point alignment and rendering
 			glVertex3f(temporary_node->x + x_offset, temporary_node->y + y_offset, temporary_node->z + z_offset);
-			temporary_node = temporary_node->next;
+			temporary_node = temporary_node->right_next;
 		}
 		renderPoints(root->right);
 	}

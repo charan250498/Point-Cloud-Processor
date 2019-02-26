@@ -36,7 +36,8 @@ struct CustomAVLTreeNode* CustomAVLTree::newNode(float coordinate_value, float x
 	node->head_node->x = x;
 	node->head_node->y = y;
 	node->head_node->z = z;
-	node->head_node->next = NULL;
+	node->head_node->right_next = NULL;
+	node->head_node->left_next = NULL;
 	return(node);
 }
 
@@ -86,15 +87,16 @@ struct CustomAVLTreeNode* CustomAVLTree::insert(struct CustomAVLTreeNode* node, 
 	else {
 		//equal coordinate values will come here
 		struct LinkedListNode *temp = node->head_node;
-		while (temp->next != NULL) {
-			temp = temp->next;
+		while (temp->right_next != NULL) {
+			temp = temp->right_next;
 		}
 		struct LinkedListNode *new_node = (struct LinkedListNode*)malloc(sizeof(struct LinkedListNode));
 		new_node->x = x;
 		new_node->y = y;
 		new_node->z = z;
-		new_node->next = NULL;
-		temp->next = new_node;
+		new_node->right_next = NULL;
+		new_node->left_next = temp;
+		temp->right_next = new_node;
 		return node;
 	}
 
@@ -129,7 +131,7 @@ void CustomAVLTree::preOrder(struct CustomAVLTreeNode* root) {
 		printf("LinkedListNodes are as follows: \n");
 		while (temp != NULL) {
 			printf("Node : %f %f %f\n", temp->x, temp->y, temp->z);
-			temp = temp->next;
+			temp = temp->right_next;
 		}
 		preOrder(root->left);
 		preOrder(root->right);
@@ -208,12 +210,13 @@ struct LinkedListNode* CustomAVLTree::searchPoint(struct CustomAVLTreeNode* root
 							searched_points->x = temporary_node->x;
 							searched_points->y = temporary_node->y;
 							searched_points->z = temporary_node->z;
-							searched_points->next = NULL;
+							searched_points->right_next = NULL;
+							searched_points->left_next = NULL;
 							flag = 1;
 							break;
 						}
 						else {
-							temporary_node = temporary_node->next;
+							temporary_node = temporary_node->right_next;
 						}
 					}
 				}
@@ -237,12 +240,13 @@ struct LinkedListNode* CustomAVLTree::searchPoint(struct CustomAVLTreeNode* root
 							searched_points->x = temporary_node->x;
 							searched_points->y = temporary_node->y;
 							searched_points->z = temporary_node->z;
-							searched_points->next = NULL;
+							searched_points->right_next = NULL;
+							searched_points->left_next = NULL;
 							flag = 1;
 							break;
 						}
 						else {
-							temporary_node = temporary_node->next;
+							temporary_node = temporary_node->right_next;
 						}
 					}
 				}
@@ -266,12 +270,13 @@ struct LinkedListNode* CustomAVLTree::searchPoint(struct CustomAVLTreeNode* root
 							searched_points->x = temporary_node->x;
 							searched_points->y = temporary_node->y;
 							searched_points->z = temporary_node->z;
-							searched_points->next = NULL;
+							searched_points->right_next = NULL;
+							searched_points->left_next = NULL;
 							flag = 1;
 							break;
 						}
 						else {
-							temporary_node = temporary_node->next;
+							temporary_node = temporary_node->right_next;
 						}
 					}
 				}
@@ -292,7 +297,8 @@ struct LinkedListNode* CustomAVLTree::searchPoint(struct CustomAVLTreeNode* root
 		searched_points->x = x;
 		searched_points->y = y;
 		searched_points->z = z;
-		searched_points->next = NULL;
+		searched_points->right_next = NULL;
+		searched_points->left_next = NULL;
 	}
 	return searched_points;
 }
