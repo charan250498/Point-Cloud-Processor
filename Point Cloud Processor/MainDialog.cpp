@@ -127,6 +127,11 @@ BOOL MainDialog::OnInitDialog()
 	// Setup the OpenGL Window's timer to render
 	m_oglWindow.m_unpTimer = m_oglWindow.SetTimer(1, 1, 0);
 
+	//Rendering root nodes points
+	highlighted_points = x_tree->root->head_node;
+	x_edit_control_value = x_tree->root->coordinate_value;
+	increase_point_size_button_control.EnableWindow(true);
+
 	//Rich Edit Control content
 	CString file_content;
 	std::ifstream fin(file_path);
