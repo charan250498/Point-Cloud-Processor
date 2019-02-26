@@ -70,6 +70,7 @@ BEGIN_MESSAGE_MAP(MainDialog, CDialog)
 	ON_BN_CLICKED(IDC_BUTTON1, &MainDialog::OnBnClickedButton1)
 	ON_BN_CLICKED(IDC_MFCBUTTON2, &MainDialog::OnBnClickedMfcbutton2)
 	ON_BN_CLICKED(IDC_MFCBUTTON3, &MainDialog::OnBnClickedMfcbutton3)
+	ON_BN_CLICKED(IDC_MFCBUTTON4, &MainDialog::OnBnClickedMfcbutton4)
 END_MESSAGE_MAP()
 
 
@@ -306,4 +307,15 @@ void MainDialog::OnBnClickedMfcbutton3()
 	else {
 		decrease_point_size_button_control.EnableWindow(false);
 	}
+}
+
+
+void MainDialog::OnBnClickedMfcbutton4()
+{
+	// TODO: Add your control notification handler code here
+	m_oglWindow.m_fPosX = 0.0f;
+	m_oglWindow.m_fPosY = 0.0f;
+	//m_oglWindow.m_fZoom = 50.0f;
+	m_oglWindow.m_fRotX = 0.0f;
+	m_oglWindow.m_fRotY = 0.0f;
 }

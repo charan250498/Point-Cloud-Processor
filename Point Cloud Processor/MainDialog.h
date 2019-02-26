@@ -53,4 +53,5 @@ public:
 	afx_msg void OnBnClickedMfcbutton3();
 	CMFCButton increase_point_size_button_control;
 	CMFCButton decrease_point_size_button_control;
+	afx_msg void OnBnClickedMfcbutton4();
 };

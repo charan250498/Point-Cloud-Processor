@@ -218,6 +218,7 @@
   <ItemGroup>
     <Image Include="res\bitmap1.bmp" />
     <Image Include="res\bitmap2.bmp" />
+    <Image Include="res\bitmap3.bmp" />
     <Image Include="res\Point Cloud Processor.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
