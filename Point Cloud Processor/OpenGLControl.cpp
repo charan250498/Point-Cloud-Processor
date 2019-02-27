@@ -110,6 +110,12 @@ void OpenGLControl::oglInitialize(void)
 	hrc = wglCreateContext(hdc);
 	wglMakeCurrent(hdc, hrc);
 
+	//**********************Time Estimation**************************************************
+	/*SYSTEMTIME start_time;
+	SYSTEMTIME end_time;
+	GetSystemTime(&start_time);*/
+	//***************************************************************************************
+
 	//**********************Reading Point Cloud into Customized AVL Tree*********************
 	float x, y, z;
 	int intensity;
@@ -129,6 +135,15 @@ void OpenGLControl::oglInitialize(void)
 		y_tree->root = y_tree->insert(y_tree->root, y, x, y, z);
 	}
 	fin.close();
+
+	//***********Time Estimation************
+	/*GetSystemTime(&end_time);
+	std::fstream fout;
+	fout.open("log.txt", 'w');
+	fout << "start time" << start_time.wSecond << "s" << start_time.wMilliseconds << "ms";
+	fout << "end time" << end_time.wSecond << "s" << end_time.wMilliseconds << "ms";
+	fout.close();*/
+	//**************************************
 
 		//**************************Offset Calculation***************************************
 		//x_offset

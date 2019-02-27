@@ -19,6 +19,7 @@ extern CustomAVLTree *y_tree;
 extern CString file_path;
 extern GLfloat cube_size_offset;
 struct LinkedListNode *highlighted_points = NULL;
+struct LinkedListNodeForHighlighting* highlighted_linked_list_head_node = NULL;
 bool refresh_button_clicked = false;
 bool zoom_in_clicked = false;
 bool zoom_out_clicked = false;
@@ -62,6 +63,8 @@ void MainDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_RICHEDIT21, m_rich_edit_control_value);
 	DDX_Control(pDX, IDC_MFCBUTTON2, increase_point_size_button_control);
 	DDX_Control(pDX, IDC_MFCBUTTON3, decrease_point_size_button_control);
+	DDX_Control(pDX, IDC_MFCBUTTON7, move_left_button_control);
+	DDX_Control(pDX, IDC_MFCBUTTON8, move_right_button_control);
 }
 
 
@@ -76,6 +79,8 @@ BEGIN_MESSAGE_MAP(MainDialog, CDialog)
 	ON_BN_CLICKED(IDC_MFCBUTTON4, &MainDialog::OnBnClickedMfcbutton4)
 	ON_BN_CLICKED(IDC_MFCBUTTON6, &MainDialog::OnBnClickedMfcbutton6)
 	ON_BN_CLICKED(IDC_MFCBUTTON5, &MainDialog::OnBnClickedMfcbutton5)
+	ON_BN_CLICKED(IDC_MFCBUTTON7, &MainDialog::OnBnClickedMfcbutton7)
+	ON_BN_CLICKED(IDC_MFCBUTTON8, &MainDialog::OnBnClickedMfcbutton8)
 END_MESSAGE_MAP()
 
 
@@ -133,10 +138,12 @@ BOOL MainDialog::OnInitDialog()
 	// Setup the OpenGL Window's timer to render
 	m_oglWindow.m_unpTimer = m_oglWindow.SetTimer(1, 1, 0);
 
-	//Rendering root nodes points
-	highlighted_points = x_tree->root->head_node;
-	x_edit_control_value = x_tree->root->coordinate_value;
+	//Rendering root nodes points at startup
+	highlighted_linked_list_head_node = x_tree->inOrder(x_tree->root);
+	highlighted_points = highlighted_linked_list_head_node->head_node;
+	x_edit_control_value = highlighted_linked_list_head_node->coordinate_value;
 	increase_point_size_button_control.EnableWindow(true);
+	move_left_button_control.EnableWindow(false);
 
 	//Rich Edit Control content
 	CString file_content;
@@ -319,6 +326,11 @@ void MainDialog::OnBnClickedMfcbutton4()
 {
 	// TODO: Add your control notification handler code here
 	refresh_button_clicked = true;
+
+
+	highlighted_points = highlighted_linked_list_head_node->head_node;
+	move_left_button_control.EnableWindow(true);
+	move_right_button_control.EnableWindow(true);
 }
 
 
@@ -334,4 +346,32 @@ void MainDialog::OnBnClickedMfcbutton5()
 	// TODO: Add your control notification handler code here
 	
 	zoom_out_clicked = true;
+}
+
+
+void MainDialog::OnBnClickedMfcbutton7()
+{
+	// TODO: Add your control notification handler code here
+	if (highlighted_linked_list_head_node->left_next != NULL) {
+		highlighted_linked_list_head_node = highlighted_linked_list_head_node->left_next;
+		highlighted_points = highlighted_linked_list_head_node->head_node;
+		move_right_button_control.EnableWindow(true);
+	}
+	if (highlighted_linked_list_head_node->left_next == NULL) {
+		move_left_button_control.EnableWindow(false);
+	}
+}
+
+
+void MainDialog::OnBnClickedMfcbutton8()
+{
+	// TODO: Add your control notification handler code here
+	if (highlighted_linked_list_head_node->right_next != NULL) {
+		highlighted_linked_list_head_node = highlighted_linked_list_head_node->right_next;
+		highlighted_points = highlighted_linked_list_head_node->head_node;
+		move_left_button_control.EnableWindow(true);
+	}
+	if (highlighted_linked_list_head_node->right_next == NULL) {
+		move_right_button_control.EnableWindow(false);
+	}
 }

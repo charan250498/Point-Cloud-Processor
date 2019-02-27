@@ -3,6 +3,7 @@
 #include<stdlib.h>
 #include<stdio.h>
 
+struct LinkedListNodeForHighlighting* head;
 
 CustomAVLTree::CustomAVLTree()
 {
@@ -301,4 +302,31 @@ struct LinkedListNode* CustomAVLTree::searchPoint(struct CustomAVLTreeNode* root
 		searched_points->left_next = NULL;
 	}
 	return searched_points;
+}
+
+struct LinkedListNodeForHighlighting* CustomAVLTree::inOrder(struct CustomAVLTreeNode *root) {
+	if (root != NULL) {
+		inOrder(root->left);
+		struct LinkedListNodeForHighlighting* new_node = (struct LinkedListNodeForHighlighting*)malloc(sizeof(struct LinkedListNodeForHighlighting));
+		if (head == NULL) {
+			new_node->coordinate_value = root->coordinate_value;
+			new_node->head_node = root->head_node;
+			new_node->left_next = NULL;
+			new_node->right_next = NULL;
+			head = new_node;
+		}
+		else {
+			struct LinkedListNodeForHighlighting* temp = head;
+			while (temp->right_next != NULL) {
+				temp = temp->right_next;
+			}
+			new_node->coordinate_value = root->coordinate_value;
+			new_node->head_node = root->head_node;
+			new_node->left_next = temp;
+			temp->right_next = new_node;
+			new_node->right_next = NULL;
+		}
+		inOrder(root->right);
+	}
+	return head;
 }

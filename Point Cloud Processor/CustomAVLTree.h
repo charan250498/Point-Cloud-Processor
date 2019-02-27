@@ -3,8 +3,14 @@ struct LinkedListNode {
 	float x;
 	float y;
 	float z;
-	struct LinkedListNode *right_next;
-	struct LinkedListNode *left_next;
+	struct LinkedListNode *right_next = NULL;
+	struct LinkedListNode *left_next = NULL;
+};
+struct LinkedListNodeForHighlighting {
+	float coordinate_value;
+	struct LinkedListNode* head_node;
+	struct LinkedListNodeForHighlighting* left_next = NULL;
+	struct LinkedListNodeForHighlighting* right_next = NULL;
 };
 struct CustomAVLTreeNode {
 	int height;
@@ -31,5 +37,6 @@ public:
 	struct LinkedListNode* searchPoint(struct CustomAVLTreeNode* root, float x, float y, float z);
 
 	void preOrder(struct CustomAVLTreeNode *root);
+	struct LinkedListNodeForHighlighting* inOrder(struct CustomAVLTreeNode *root);
 };
 

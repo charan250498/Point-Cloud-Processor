@@ -56,4 +56,8 @@ public:
 	afx_msg void OnBnClickedMfcbutton4();
 	afx_msg void OnBnClickedMfcbutton6();
 	afx_msg void OnBnClickedMfcbutton5();
+	afx_msg void OnBnClickedMfcbutton7();
+	afx_msg void OnBnClickedMfcbutton8();
+	CMFCButton move_left_button_control;
+	CMFCButton move_right_button_control;
 };
