@@ -19,6 +19,9 @@ extern CustomAVLTree *y_tree;
 extern CString file_path;
 extern GLfloat cube_size_offset;
 struct LinkedListNode *highlighted_points = NULL;
+struct LinkedListNode* highlight_single_point = (struct LinkedListNode*)malloc(sizeof(struct LinkedListNode));
+struct LinkedListNode* ptr_single_point = NULL;
+struct LinkedListNodeForHighlighting* original_linked_list_of_points = NULL;
 struct LinkedListNodeForHighlighting* highlighted_linked_list_head_node = NULL;
 bool refresh_button_clicked = false;
 bool zoom_in_clicked = false;
@@ -65,6 +68,12 @@ void MainDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_MFCBUTTON3, decrease_point_size_button_control);
 	DDX_Control(pDX, IDC_MFCBUTTON7, move_left_button_control);
 	DDX_Control(pDX, IDC_MFCBUTTON8, move_right_button_control);
+	DDX_Control(pDX, IDC_MFCBUTTON9, move_fast_right_button_control);
+	DDX_Control(pDX, IDC_MFCBUTTON10, move_fast_left_button_control);
+	DDX_Control(pDX, IDC_MFCBUTTON12, move_forward_button_control);
+	DDX_Control(pDX, IDC_MFCBUTTON11, move_backward_button_control);
+	DDX_Control(pDX, IDC_MFCBUTTON13, move_forward_fast_button_control);
+	DDX_Control(pDX, IDC_MFCBUTTON14, move_backward_fast_button_control);
 }
 
 
@@ -81,6 +90,13 @@ BEGIN_MESSAGE_MAP(MainDialog, CDialog)
 	ON_BN_CLICKED(IDC_MFCBUTTON5, &MainDialog::OnBnClickedMfcbutton5)
 	ON_BN_CLICKED(IDC_MFCBUTTON7, &MainDialog::OnBnClickedMfcbutton7)
 	ON_BN_CLICKED(IDC_MFCBUTTON8, &MainDialog::OnBnClickedMfcbutton8)
+	ON_BN_CLICKED(IDC_MFCBUTTON9, &MainDialog::OnBnClickedMfcbutton9)
+	ON_BN_CLICKED(IDC_MFCBUTTON10, &MainDialog::OnBnClickedMfcbutton10)
+	ON_BN_CLICKED(IDC_MFCBUTTON12, &MainDialog::OnBnClickedMfcbutton12)
+	ON_BN_CLICKED(IDC_MFCBUTTON11, &MainDialog::OnBnClickedMfcbutton11)
+	ON_BN_CLICKED(IDC_MFCBUTTON13, &MainDialog::OnBnClickedMfcbutton13)
+	ON_BN_CLICKED(IDC_MFCBUTTON14, &MainDialog::OnBnClickedMfcbutton14)
+	ON_BN_CLICKED(IDC_BUTTON2, &MainDialog::OnBnClickedButton2)
 END_MESSAGE_MAP()
 
 
@@ -139,11 +155,16 @@ BOOL MainDialog::OnInitDialog()
 	m_oglWindow.m_unpTimer = m_oglWindow.SetTimer(1, 1, 0);
 
 	//Rendering root nodes points at startup
-	highlighted_linked_list_head_node = x_tree->inOrder(x_tree->root);
+	original_linked_list_of_points = x_tree->inOrder(x_tree->root);
+	highlighted_linked_list_head_node = original_linked_list_of_points;
 	highlighted_points = highlighted_linked_list_head_node->head_node;
+	ptr_single_point = highlighted_linked_list_head_node->head_node;
 	x_edit_control_value = highlighted_linked_list_head_node->coordinate_value;
 	increase_point_size_button_control.EnableWindow(true);
 	move_left_button_control.EnableWindow(false);
+	move_fast_left_button_control.EnableWindow(false);
+	move_backward_button_control.EnableWindow(false);
+	move_backward_fast_button_control.EnableWindow(false);
 
 	//Rich Edit Control content
 	CString file_content;
@@ -326,11 +347,13 @@ void MainDialog::OnBnClickedMfcbutton4()
 {
 	// TODO: Add your control notification handler code here
 	refresh_button_clicked = true;
-
-
+	highlighted_linked_list_head_node = original_linked_list_of_points;
 	highlighted_points = highlighted_linked_list_head_node->head_node;
-	move_left_button_control.EnableWindow(true);
-	move_right_button_control.EnableWindow(true);
+	ptr_single_point = highlighted_linked_list_head_node->head_node;
+	move_left_button_control.EnableWindow(false);
+	move_fast_left_button_control.EnableWindow(false);
+	move_backward_button_control.EnableWindow(false);
+	move_backward_fast_button_control.EnableWindow(false);
 }
 
 
@@ -355,10 +378,13 @@ void MainDialog::OnBnClickedMfcbutton7()
 	if (highlighted_linked_list_head_node->left_next != NULL) {
 		highlighted_linked_list_head_node = highlighted_linked_list_head_node->left_next;
 		highlighted_points = highlighted_linked_list_head_node->head_node;
+		ptr_single_point = highlighted_linked_list_head_node->head_node;
 		move_right_button_control.EnableWindow(true);
+		move_fast_right_button_control.EnableWindow(true);
 	}
 	if (highlighted_linked_list_head_node->left_next == NULL) {
 		move_left_button_control.EnableWindow(false);
+		move_fast_left_button_control.EnableWindow(false);
 	}
 }
 
@@ -369,9 +395,152 @@ void MainDialog::OnBnClickedMfcbutton8()
 	if (highlighted_linked_list_head_node->right_next != NULL) {
 		highlighted_linked_list_head_node = highlighted_linked_list_head_node->right_next;
 		highlighted_points = highlighted_linked_list_head_node->head_node;
+		ptr_single_point = highlighted_linked_list_head_node->head_node;
 		move_left_button_control.EnableWindow(true);
+		move_fast_left_button_control.EnableWindow(true);
 	}
 	if (highlighted_linked_list_head_node->right_next == NULL) {
 		move_right_button_control.EnableWindow(false);
+		move_fast_right_button_control.EnableWindow(false);
 	}
+}
+
+
+void MainDialog::OnBnClickedMfcbutton9()
+{
+	// TODO: Add your control notification handler code here
+	if (highlighted_linked_list_head_node->right_next != NULL) {
+		for (int i = 0;i < 20 && highlighted_linked_list_head_node->right_next != NULL;i++) {
+			highlighted_linked_list_head_node = highlighted_linked_list_head_node->right_next;
+		}
+		highlighted_points = highlighted_linked_list_head_node->head_node;
+		ptr_single_point = highlighted_linked_list_head_node->head_node;
+		move_left_button_control.EnableWindow(true);
+		move_fast_left_button_control.EnableWindow(true);
+	}
+	if (highlighted_linked_list_head_node->right_next == NULL) {
+		move_right_button_control.EnableWindow(false);
+		move_fast_right_button_control.EnableWindow(false);
+	}
+}
+
+
+void MainDialog::OnBnClickedMfcbutton10()
+{
+	// TODO: Add your control notification handler code here
+	if (highlighted_linked_list_head_node->left_next != NULL) {
+		for (int i = 0;i < 20 && highlighted_linked_list_head_node->left_next != NULL;i++) {
+			highlighted_linked_list_head_node = highlighted_linked_list_head_node->left_next;
+		}
+		highlighted_points = highlighted_linked_list_head_node->head_node;
+		ptr_single_point = highlighted_linked_list_head_node->head_node;
+		move_right_button_control.EnableWindow(true);
+		move_fast_right_button_control.EnableWindow(true);
+	}
+	if (highlighted_linked_list_head_node->left_next == NULL) {
+		move_left_button_control.EnableWindow(false);
+		move_fast_left_button_control.EnableWindow(false);
+	}
+}
+
+
+void MainDialog::OnBnClickedMfcbutton12()
+{
+	// TODO: Add your control notification handler code here
+	// move forward button
+	if (ptr_single_point->right_next != NULL) {
+		ptr_single_point = ptr_single_point->right_next;
+		highlight_single_point->x = ptr_single_point->x;
+		highlight_single_point->y = ptr_single_point->y;
+		highlight_single_point->z = ptr_single_point->z;
+		highlight_single_point->left_next = NULL;
+		highlight_single_point->right_next = NULL;
+		highlighted_points = highlight_single_point;
+		move_backward_button_control.EnableWindow(true);
+		move_backward_fast_button_control.EnableWindow(true);
+	}
+	if (ptr_single_point->right_next == NULL) {
+		move_forward_button_control.EnableWindow(false);
+		move_forward_fast_button_control.EnableWindow(false);
+	}
+}
+
+
+void MainDialog::OnBnClickedMfcbutton11()
+{
+	// TODO: Add your control notification handler code here
+	// move backward button
+	if (ptr_single_point->left_next != NULL) {
+		ptr_single_point = ptr_single_point->left_next;
+		highlight_single_point->x = ptr_single_point->x;
+		highlight_single_point->y = ptr_single_point->y;
+		highlight_single_point->z = ptr_single_point->z;
+		highlight_single_point->left_next = NULL;
+		highlight_single_point->right_next = NULL;
+		highlighted_points = highlight_single_point;
+		move_forward_button_control.EnableWindow(true);
+		move_forward_fast_button_control.EnableWindow(true);
+	}
+	if (ptr_single_point->left_next == NULL) {
+		move_backward_button_control.EnableWindow(false);
+		move_backward_fast_button_control.EnableWindow(false);
+	}
+}
+
+
+void MainDialog::OnBnClickedMfcbutton13()
+{
+	// TODO: Add your control notification handler code here
+	// move forward fast
+	if (ptr_single_point->right_next != NULL) {
+		for (int i = 0;i < 20 && ptr_single_point->right_next != NULL;i++) {
+			ptr_single_point = ptr_single_point->right_next;
+		}
+		highlight_single_point->x = ptr_single_point->x;
+		highlight_single_point->y = ptr_single_point->y;
+		highlight_single_point->z = ptr_single_point->z;
+		highlight_single_point->left_next = NULL;
+		highlight_single_point->right_next = NULL;
+		highlighted_points = highlight_single_point;
+		move_backward_button_control.EnableWindow(true);
+		move_backward_fast_button_control.EnableWindow(true);
+	}
+	if (ptr_single_point->right_next == NULL) {
+		move_forward_button_control.EnableWindow(false);
+		move_forward_fast_button_control.EnableWindow(false);
+	}
+}
+
+
+void MainDialog::OnBnClickedMfcbutton14()
+{
+	// TODO: Add your control notification handler code here
+	// move backward fast
+	if (ptr_single_point->left_next != NULL) {
+		for (int i = 0;i < 20 && ptr_single_point->left_next != NULL;i++) {
+			ptr_single_point = ptr_single_point->left_next;
+		}
+		highlight_single_point->x = ptr_single_point->x;
+		highlight_single_point->y = ptr_single_point->y;
+		highlight_single_point->z = ptr_single_point->z;
+		highlight_single_point->left_next = NULL;
+		highlight_single_point->right_next = NULL;
+		highlighted_points = highlight_single_point;
+		move_forward_button_control.EnableWindow(true);
+		move_forward_fast_button_control.EnableWindow(true);
+	}
+	if (ptr_single_point->left_next == NULL) {
+		move_backward_button_control.EnableWindow(false);
+		move_backward_fast_button_control.EnableWindow(false);
+	}
+}
+
+
+void MainDialog::OnBnClickedButton2()
+{
+	// TODO: Add your control notification handler code here
+	x_edit_control_value = ptr_single_point->x;
+	y_edit_control_value = ptr_single_point->y;
+	z_edit_control_value = ptr_single_point->z;
+	UpdateData(false);
 }

@@ -60,4 +60,17 @@ public:
 	afx_msg void OnBnClickedMfcbutton8();
 	CMFCButton move_left_button_control;
 	CMFCButton move_right_button_control;
+	afx_msg void OnBnClickedMfcbutton9();
+	afx_msg void OnBnClickedMfcbutton10();
+	CMFCButton move_fast_right_button_control;
+	CMFCButton move_fast_left_button_control;
+	afx_msg void OnBnClickedMfcbutton12();
+	afx_msg void OnBnClickedMfcbutton11();
+	CMFCButton move_forward_button_control;
+	CMFCButton move_backward_button_control;
+	afx_msg void OnBnClickedMfcbutton13();
+	afx_msg void OnBnClickedMfcbutton14();
+	CMFCButton move_forward_fast_button_control;
+	CMFCButton move_backward_fast_button_control;
+	afx_msg void OnBnClickedButton2();
 };

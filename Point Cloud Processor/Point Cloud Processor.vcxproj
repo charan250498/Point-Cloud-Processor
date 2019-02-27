@@ -217,6 +217,10 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\bitmap1.bmp" />
+    <Image Include="res\bitmap10.bmp" />
+    <Image Include="res\bitmap11.bmp" />
+    <Image Include="res\bitmap12.bmp" />
+    <Image Include="res\bitmap13.bmp" />
     <Image Include="res\bitmap2.bmp" />
     <Image Include="res\bitmap3.bmp" />
     <Image Include="res\bitmap4.bmp" />
