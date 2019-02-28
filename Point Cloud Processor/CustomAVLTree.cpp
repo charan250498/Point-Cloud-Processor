@@ -203,7 +203,7 @@ struct LinkedListNode* CustomAVLTree::searchPoint(struct CustomAVLTreeNode* root
 		searched_points = (struct LinkedListNode*)malloc(sizeof(struct LinkedListNode));
 		struct LinkedListNode* temporary_node;
 		if (x == 9999) {
-			while (tree_node != NULL && flag != 1) {
+			while (tree_node != NULL && flag != 1 && flag != -1) {
 				if (tree_node->coordinate_value == z) {
 					temporary_node = tree_node->head_node;
 					while (temporary_node != NULL) {
@@ -218,6 +218,10 @@ struct LinkedListNode* CustomAVLTree::searchPoint(struct CustomAVLTreeNode* root
 						}
 						else {
 							temporary_node = temporary_node->right_next;
+							if (temporary_node == NULL) {
+								flag = -1;
+								break;
+							}
 						}
 					}
 				}
@@ -231,10 +235,14 @@ struct LinkedListNode* CustomAVLTree::searchPoint(struct CustomAVLTreeNode* root
 			if (flag == 0) {
 				return NULL;
 			}
+			if (flag == -1) {
+				return NULL;
+			}
 		}
 		else if (y == 9999) {
-			while (tree_node != NULL && flag != 1) {
+			while (tree_node != NULL && flag != 1 && flag != -1) {
 				if (tree_node->coordinate_value == x) {
+					int loop_count = 0;
 					temporary_node = tree_node->head_node;
 					while (temporary_node != NULL) {
 						if (temporary_node->z == z) {
@@ -248,6 +256,10 @@ struct LinkedListNode* CustomAVLTree::searchPoint(struct CustomAVLTreeNode* root
 						}
 						else {
 							temporary_node = temporary_node->right_next;
+							if (temporary_node == NULL) {
+								flag = -1;
+								break;
+							}
 						}
 					}
 				}
@@ -261,9 +273,12 @@ struct LinkedListNode* CustomAVLTree::searchPoint(struct CustomAVLTreeNode* root
 			if (flag == 0) {
 				return NULL;
 			}
+			if (flag == -1) {
+				return NULL;
+			}
 		}
 		else {
-			while (tree_node != NULL && flag != 1) {
+			while (tree_node != NULL && flag != 1 && flag != -1) {
 				if (tree_node->coordinate_value == x) {
 					temporary_node = tree_node->head_node;
 					while (temporary_node != NULL) {
@@ -278,6 +293,10 @@ struct LinkedListNode* CustomAVLTree::searchPoint(struct CustomAVLTreeNode* root
 						}
 						else {
 							temporary_node = temporary_node->right_next;
+							if (temporary_node == NULL) {
+								flag = -1;
+								break;
+							}
 						}
 					}
 				}
@@ -289,6 +308,9 @@ struct LinkedListNode* CustomAVLTree::searchPoint(struct CustomAVLTreeNode* root
 				}
 			}
 			if (flag == 0) {
+				return NULL;
+			}
+			if (flag == -1) {
 				return NULL;
 			}
 		}

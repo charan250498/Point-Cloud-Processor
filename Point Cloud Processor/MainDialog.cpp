@@ -97,6 +97,7 @@ BEGIN_MESSAGE_MAP(MainDialog, CDialog)
 	ON_BN_CLICKED(IDC_MFCBUTTON13, &MainDialog::OnBnClickedMfcbutton13)
 	ON_BN_CLICKED(IDC_MFCBUTTON14, &MainDialog::OnBnClickedMfcbutton14)
 	ON_BN_CLICKED(IDC_BUTTON2, &MainDialog::OnBnClickedButton2)
+	ON_WM_KEYDOWN()
 END_MESSAGE_MAP()
 
 
@@ -178,9 +179,12 @@ BOOL MainDialog::OnInitDialog()
 	}
 	m_rich_edit_control_value = file_content;
 	UpdateData(false);
+
+	CWnd::SetFocus();
+
 	//***************************************************************************
 	ShowWindow(SW_SHOW);
-	return FALSE;  // return TRUE  unless you set the focus to a control
+	return TRUE;  // return TRUE  unless you set the focus to a control
 }
 
 void MainDialog::OnSize(UINT nType, int cx, int cy)
@@ -217,9 +221,7 @@ void MainDialog::OnBnClickedCheck1()
 	UpdateData();
 	x_edit_control.EnableWindow(x_check_box_value);
 	m_get_points_button_control.EnableWindow(x_check_box_value || y_check_box_value || z_check_box_value);
-	if (x_check_box_value || y_check_box_value || z_check_box_value) {
-		m_get_points_button_control.SetFocus();
-	}
+	CWnd::SetFocus();
 	//UpdateData(false);
 }
 
@@ -230,9 +232,7 @@ void MainDialog::OnBnClickedCheck2()
 	UpdateData();
 	y_edit_control.EnableWindow(y_check_box_value);
 	m_get_points_button_control.EnableWindow(x_check_box_value || y_check_box_value || z_check_box_value);
-	if (x_check_box_value || y_check_box_value || z_check_box_value) {
-		m_get_points_button_control.SetFocus();
-	}
+	CWnd::SetFocus();
 	//UpdateData(false);
 }
 
@@ -243,9 +243,7 @@ void MainDialog::OnBnClickedCheck3()
 	UpdateData();
 	z_edit_control.EnableWindow(z_check_box_value);
 	m_get_points_button_control.EnableWindow(x_check_box_value || y_check_box_value || z_check_box_value);
-	if (x_check_box_value || y_check_box_value || z_check_box_value) {
-		m_get_points_button_control.SetFocus();
-	}
+	CWnd::SetFocus();
 	//UpdateData(false);
 }
 
@@ -254,69 +252,67 @@ void MainDialog::OnBnClickedButton1()
 {
 	// TODO: Add your control notification handler code here
 	UpdateData();
-	if ((x_check_box_value && y_check_box_value) || (y_check_box_value && z_check_box_value) || (x_check_box_value && z_check_box_value)) {
-		if (x_check_box_value && y_check_box_value) {
-			highlighted_points = x_tree->searchPoint(x_tree->root, x_edit_control_value, y_edit_control_value, (float)9999);
-			if (highlighted_points != NULL) {
-				z_edit_control_value = highlighted_points->z;
-				increase_point_size_button_control.EnableWindow(highlighted_points != NULL);
-				decrease_point_size_button_control.EnableWindow(highlighted_points != NULL);
-			}
-			else {
-				if (x_check_box_value && y_check_box_value && z_check_box_value) {
-					AfxMessageBox(L"Could not find X or Y or Z coordinate in the point cloud");
+	if (x_check_box_value && y_check_box_value && z_check_box_value) {
+		highlighted_points = x_tree->searchPoint(x_tree->root, x_edit_control_value, y_edit_control_value, z_edit_control_value);
+	}
+	else {
+		if ((x_check_box_value && y_check_box_value) || (y_check_box_value && z_check_box_value) || (x_check_box_value && z_check_box_value)) {
+			if (x_check_box_value && y_check_box_value) {
+				highlighted_points = x_tree->searchPoint(x_tree->root, x_edit_control_value, y_edit_control_value, (float)9999);
+				if (highlighted_points != NULL) {
+					z_edit_control_value = highlighted_points->z;
 				}
 				else {
 					AfxMessageBox(L"Could not find X or Y coordinate in the point cloud");
 				}
 			}
-		}
-		else if (y_check_box_value && z_check_box_value) {
-			highlighted_points = z_tree->searchPoint(z_tree->root, (float)9999, y_edit_control_value, z_edit_control_value);
-			if (highlighted_points != NULL) {
-				x_edit_control_value = highlighted_points->x;
+			else if (y_check_box_value && z_check_box_value) {
+				highlighted_points = z_tree->searchPoint(z_tree->root, (float)9999, y_edit_control_value, z_edit_control_value);
+				if (highlighted_points != NULL) {
+					x_edit_control_value = highlighted_points->x;
+				}
+				else {
+					AfxMessageBox(L"Could not find Y or Z coordinate in the point cloud");
+				}
 			}
 			else {
-				AfxMessageBox(L"Could not find Y or Z coordinate in the point cloud");
+				highlighted_points = x_tree->searchPoint(x_tree->root, x_edit_control_value, (float)9999, z_edit_control_value);
+				if (highlighted_points != NULL) {
+					y_edit_control_value = highlighted_points->y;
+				}
+				else {
+					AfxMessageBox(L"Could not find X or Z coordinate in the point cloud");
+				}
+			}
+		}
+		else if (x_check_box_value || y_check_box_value || z_check_box_value) {
+			if (x_check_box_value) {
+				highlighted_points = x_tree->searchPoint(x_tree->root, x_edit_control_value, (float)9999, (float)9999);
+				if (highlighted_points == NULL) {
+					AfxMessageBox(L"Could not find the X coordinate in the point cloud");
+				}
+			}
+			else if (y_check_box_value) {
+				highlighted_points = y_tree->searchPoint(y_tree->root, (float)9999, y_edit_control_value, (float)9999);
+				if (highlighted_points == NULL) {
+					AfxMessageBox(L"Could not find the Y coordinate in the point cloud");
+				}
+			}
+			else {
+				highlighted_points = z_tree->searchPoint(z_tree->root, (float)9999, (float)9999, z_edit_control_value);
+				if (highlighted_points == NULL) {
+					AfxMessageBox(L"Could not find the Z coordinate in the point cloud");
+				}
 			}
 		}
 		else {
-			highlighted_points = x_tree->searchPoint(x_tree->root, x_edit_control_value, (float)9999, z_edit_control_value);
-			y_edit_control_value = highlighted_points->y;
-			if (highlighted_points != NULL) {
-				y_edit_control_value = highlighted_points->y;
-			}
-			else {
-				AfxMessageBox(L"Could not find X or Z coordinate in the point cloud");
-			}
-		}
-	}
-	else if (x_check_box_value || y_check_box_value || z_check_box_value) {
-		if (x_check_box_value) {
-			highlighted_points = x_tree->searchPoint(x_tree->root, x_edit_control_value, (float)9999, (float)9999);
-			if (highlighted_points == NULL) {
-				AfxMessageBox(L"Could not find the X coordinate in the point cloud");
-			}
-		}
-		else if (y_check_box_value) {
-			highlighted_points = y_tree->searchPoint(y_tree->root, (float)9999, y_edit_control_value, (float)9999);
-			if (highlighted_points == NULL) {
-				AfxMessageBox(L"Could not find the Y coordinate in the point cloud");
-			}
-		}
-		else {
-			highlighted_points = z_tree->searchPoint(z_tree->root, (float)9999, (float)9999, z_edit_control_value);
-			if (highlighted_points == NULL) {
-				AfxMessageBox(L"Could not find the Z coordinate in the point cloud");
-			}
-		}
-	}
-	else {
-		highlighted_points = x_tree->searchPoint(x_tree->root, x_edit_control_value, y_edit_control_value, z_edit_control_value);
+			highlighted_points = x_tree->searchPoint(x_tree->root, x_edit_control_value, y_edit_control_value, z_edit_control_value);
 
+		}
 	}
 	increase_point_size_button_control.EnableWindow(highlighted_points != NULL);
 	decrease_point_size_button_control.EnableWindow(false);
+	CWnd::SetFocus();
 	UpdateData(false);
 }
 
@@ -328,6 +324,7 @@ void MainDialog::OnBnClickedMfcbutton2()
 	// TODO: Add your control notification handler code here
 	cube_size_offset += 0.1;
 	decrease_point_size_button_control.EnableWindow(true);
+	CWnd::SetFocus();
 }
 
 
@@ -340,6 +337,7 @@ void MainDialog::OnBnClickedMfcbutton3()
 	else {
 		decrease_point_size_button_control.EnableWindow(false);
 	}
+	CWnd::SetFocus();
 }
 
 
@@ -354,6 +352,7 @@ void MainDialog::OnBnClickedMfcbutton4()
 	move_fast_left_button_control.EnableWindow(false);
 	move_backward_button_control.EnableWindow(false);
 	move_backward_fast_button_control.EnableWindow(false);
+	CWnd::SetFocus();
 }
 
 
@@ -361,6 +360,7 @@ void MainDialog::OnBnClickedMfcbutton6()
 {
 	// TODO: Add your control notification handler code here
 	zoom_in_clicked = true;
+	CWnd::SetFocus();
 }
 
 
@@ -369,6 +369,7 @@ void MainDialog::OnBnClickedMfcbutton5()
 	// TODO: Add your control notification handler code here
 	
 	zoom_out_clicked = true;
+	CWnd::SetFocus();
 }
 
 
@@ -386,6 +387,7 @@ void MainDialog::OnBnClickedMfcbutton7()
 		move_left_button_control.EnableWindow(false);
 		move_fast_left_button_control.EnableWindow(false);
 	}
+	CWnd::SetFocus();
 }
 
 
@@ -403,6 +405,7 @@ void MainDialog::OnBnClickedMfcbutton8()
 		move_right_button_control.EnableWindow(false);
 		move_fast_right_button_control.EnableWindow(false);
 	}
+	CWnd::SetFocus();
 }
 
 
@@ -422,6 +425,7 @@ void MainDialog::OnBnClickedMfcbutton9()
 		move_right_button_control.EnableWindow(false);
 		move_fast_right_button_control.EnableWindow(false);
 	}
+	CWnd::SetFocus();
 }
 
 
@@ -441,6 +445,7 @@ void MainDialog::OnBnClickedMfcbutton10()
 		move_left_button_control.EnableWindow(false);
 		move_fast_left_button_control.EnableWindow(false);
 	}
+	CWnd::SetFocus();
 }
 
 
@@ -463,6 +468,7 @@ void MainDialog::OnBnClickedMfcbutton12()
 		move_forward_button_control.EnableWindow(false);
 		move_forward_fast_button_control.EnableWindow(false);
 	}
+	CWnd::SetFocus();
 }
 
 
@@ -485,6 +491,7 @@ void MainDialog::OnBnClickedMfcbutton11()
 		move_backward_button_control.EnableWindow(false);
 		move_backward_fast_button_control.EnableWindow(false);
 	}
+	CWnd::SetFocus();
 }
 
 
@@ -509,6 +516,7 @@ void MainDialog::OnBnClickedMfcbutton13()
 		move_forward_button_control.EnableWindow(false);
 		move_forward_fast_button_control.EnableWindow(false);
 	}
+	CWnd::SetFocus();
 }
 
 
@@ -533,6 +541,7 @@ void MainDialog::OnBnClickedMfcbutton14()
 		move_backward_button_control.EnableWindow(false);
 		move_backward_fast_button_control.EnableWindow(false);
 	}
+	CWnd::SetFocus();
 }
 
 
@@ -550,5 +559,97 @@ void MainDialog::OnBnClickedButton2()
 		y_edit_control_value = 0;
 		z_edit_control_value = 0;
 	}
+	CWnd::SetFocus();
 	UpdateData(false);
+}
+
+
+void MainDialog::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
+{
+	// TODO: Add your message handler code here and/or call default
+
+	//implemented below using pretranslatemessage function.
+
+	CDialogEx::OnKeyDown(nChar, nRepCnt, nFlags);
+}
+
+BOOL MainDialog::PreTranslateMessage(MSG* pMsg)
+{
+	if (pMsg->message == WM_KEYDOWN)
+	{
+		if (pMsg->wParam == VK_LEFT)
+		{
+			if (highlighted_linked_list_head_node->left_next != NULL) {
+				for (int i = 0;i < 5 && highlighted_linked_list_head_node->left_next != NULL;i++) {
+					highlighted_linked_list_head_node = highlighted_linked_list_head_node->left_next;
+				}
+				highlighted_points = highlighted_linked_list_head_node->head_node;
+				ptr_single_point = highlighted_linked_list_head_node->head_node;
+				move_right_button_control.EnableWindow(true);
+				move_fast_right_button_control.EnableWindow(true);
+			}
+			if (highlighted_linked_list_head_node->left_next == NULL) {
+				move_left_button_control.EnableWindow(false);
+				move_fast_left_button_control.EnableWindow(false);
+			}
+		}
+		if (pMsg->wParam == VK_RIGHT)
+		{
+			if (highlighted_linked_list_head_node->right_next != NULL) {
+				for (int i = 0;i < 5 && highlighted_linked_list_head_node->right_next != NULL;i++) {
+					highlighted_linked_list_head_node = highlighted_linked_list_head_node->right_next;
+				}
+				highlighted_points = highlighted_linked_list_head_node->head_node;
+				ptr_single_point = highlighted_linked_list_head_node->head_node;
+				move_left_button_control.EnableWindow(true);
+				move_fast_left_button_control.EnableWindow(true);
+			}
+			if (highlighted_linked_list_head_node->right_next == NULL) {
+				move_right_button_control.EnableWindow(false);
+				move_fast_right_button_control.EnableWindow(false);
+			}
+		}
+		if (pMsg->wParam == VK_UP)
+		{
+			if (ptr_single_point->right_next != NULL) {
+				for (int i = 0;i < 5 && ptr_single_point->right_next != NULL;i++) {
+					ptr_single_point = ptr_single_point->right_next;
+				}
+				highlight_single_point->x = ptr_single_point->x;
+				highlight_single_point->y = ptr_single_point->y;
+				highlight_single_point->z = ptr_single_point->z;
+				highlight_single_point->left_next = NULL;
+				highlight_single_point->right_next = NULL;
+				highlighted_points = highlight_single_point;
+				move_backward_button_control.EnableWindow(true);
+				move_backward_fast_button_control.EnableWindow(true);
+			}
+			if (ptr_single_point->right_next == NULL) {
+				move_forward_button_control.EnableWindow(false);
+				move_forward_fast_button_control.EnableWindow(false);
+			}
+		}
+		if (pMsg->wParam == VK_DOWN)
+		{
+			if (ptr_single_point->left_next != NULL) {
+				for (int i = 0;i < 5 && ptr_single_point->left_next != NULL;i++) {
+					ptr_single_point = ptr_single_point->left_next;
+				}
+				highlight_single_point->x = ptr_single_point->x;
+				highlight_single_point->y = ptr_single_point->y;
+				highlight_single_point->z = ptr_single_point->z;
+				highlight_single_point->left_next = NULL;
+				highlight_single_point->right_next = NULL;
+				highlighted_points = highlight_single_point;
+				move_forward_button_control.EnableWindow(true);
+				move_forward_fast_button_control.EnableWindow(true);
+			}
+			if (ptr_single_point->left_next == NULL) {
+				move_backward_button_control.EnableWindow(false);
+				move_backward_fast_button_control.EnableWindow(false);
+			}
+		}
+	}
+	CWnd::SetFocus();
+	return CDialog::PreTranslateMessage(pMsg);
 }

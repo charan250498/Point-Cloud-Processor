@@ -73,4 +73,7 @@ public:
 	CMFCButton move_forward_fast_button_control;
 	CMFCButton move_backward_fast_button_control;
 	afx_msg void OnBnClickedButton2();
+	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
+
+	afx_msg BOOL MainDialog::PreTranslateMessage(MSG* pMsg);
 };

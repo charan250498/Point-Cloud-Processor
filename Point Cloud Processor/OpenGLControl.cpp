@@ -390,7 +390,11 @@ void OpenGLControl::oglDrawScene(void)
 	
 	if (highlighted_points != NULL) {
 		//Different color for highlighting Turquoise Green
-		glColor3f((GLfloat)(0.06667), (GLfloat)(0.57647), (GLfloat)(0.443137));
+		//glColor3f((GLfloat)(0.06667), (GLfloat)(0.57647), (GLfloat)(0.443137));
+
+		//Different color for highlighting Magenta Crimson Red
+		glColor3f((GLfloat)0.746, (GLfloat)0.0664, (GLfloat)0.1680);
+
 		//glPointSize(0.0);
 		while (highlight_points != NULL) {
 			x_coordinate = highlight_points->x + x_offset;
