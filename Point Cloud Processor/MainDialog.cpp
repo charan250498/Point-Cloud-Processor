@@ -180,7 +180,7 @@ BOOL MainDialog::OnInitDialog()
 	m_rich_edit_control_value = file_content;
 	UpdateData(false);
 
-	CWnd::SetFocus();
+	//CWnd::SetFocus();
 
 	//***************************************************************************
 	ShowWindow(SW_SHOW);
@@ -221,7 +221,7 @@ void MainDialog::OnBnClickedCheck1()
 	UpdateData();
 	x_edit_control.EnableWindow(x_check_box_value);
 	m_get_points_button_control.EnableWindow(x_check_box_value || y_check_box_value || z_check_box_value);
-	CWnd::SetFocus();
+	//CWnd::SetFocus();
 	//UpdateData(false);
 }
 
@@ -232,7 +232,7 @@ void MainDialog::OnBnClickedCheck2()
 	UpdateData();
 	y_edit_control.EnableWindow(y_check_box_value);
 	m_get_points_button_control.EnableWindow(x_check_box_value || y_check_box_value || z_check_box_value);
-	CWnd::SetFocus();
+	//CWnd::SetFocus();
 	//UpdateData(false);
 }
 
@@ -243,7 +243,7 @@ void MainDialog::OnBnClickedCheck3()
 	UpdateData();
 	z_edit_control.EnableWindow(z_check_box_value);
 	m_get_points_button_control.EnableWindow(x_check_box_value || y_check_box_value || z_check_box_value);
-	CWnd::SetFocus();
+	//CWnd::SetFocus();
 	//UpdateData(false);
 }
 
@@ -312,7 +312,7 @@ void MainDialog::OnBnClickedButton1()
 	}
 	increase_point_size_button_control.EnableWindow(highlighted_points != NULL);
 	decrease_point_size_button_control.EnableWindow(false);
-	CWnd::SetFocus();
+	//CWnd::SetFocus();
 	UpdateData(false);
 }
 
@@ -559,7 +559,7 @@ void MainDialog::OnBnClickedButton2()
 		y_edit_control_value = 0;
 		z_edit_control_value = 0;
 	}
-	CWnd::SetFocus();
+	//CWnd::SetFocus();
 	UpdateData(false);
 }
 
@@ -650,6 +650,6 @@ BOOL MainDialog::PreTranslateMessage(MSG* pMsg)
 			}
 		}
 	}
-	CWnd::SetFocus();
+	//CWnd::SetFocus();
 	return CDialog::PreTranslateMessage(pMsg);
 }
