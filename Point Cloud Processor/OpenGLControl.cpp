@@ -374,7 +374,7 @@ void OpenGLControl::oglDrawScene(void)
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 	glBegin(GL_POINTS);
-	glPointSize(1.0);
+	glPointSize(2.0);
 
 	renderPoints(x_tree->root);
 	glEnd();

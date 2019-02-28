@@ -539,8 +539,16 @@ void MainDialog::OnBnClickedMfcbutton14()
 void MainDialog::OnBnClickedButton2()
 {
 	// TODO: Add your control notification handler code here
-	x_edit_control_value = ptr_single_point->x;
-	y_edit_control_value = ptr_single_point->y;
-	z_edit_control_value = ptr_single_point->z;
+	//Show values of highlighted points.
+	if (highlighted_points->right_next == NULL) {
+		x_edit_control_value = ptr_single_point->x;
+		y_edit_control_value = ptr_single_point->y;
+		z_edit_control_value = ptr_single_point->z;
+	}
+	else {
+		x_edit_control_value = ptr_single_point->x;
+		y_edit_control_value = 0;
+		z_edit_control_value = 0;
+	}
 	UpdateData(false);
 }
