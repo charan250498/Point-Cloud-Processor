@@ -62,7 +62,7 @@ CPointCloudProcessorDlg::CPointCloudProcessorDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_POINTCLOUDPROCESSOR_DIALOG, pParent)
 	, m_edit_browse_control_string(_T(""))
 {
-	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
+	m_hIcon = AfxGetApp()->LoadIcon(IDI_ICON1);
 }
 
 void CPointCloudProcessorDlg::DoDataExchange(CDataExchange* pDX)

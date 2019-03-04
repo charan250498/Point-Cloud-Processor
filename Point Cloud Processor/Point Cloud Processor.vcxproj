@@ -216,6 +216,15 @@
     <None Include="res\PointCloudProcessor.rc2" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="favicon (1).ico" />
+    <Image Include="favicon (2).ico" />
+    <Image Include="favicon (3).ico" />
+    <Image Include="favicon.ico" />
+    <Image Include="icon sample 1.ico" />
+    <Image Include="icon sample 2.ico" />
+    <Image Include="icon sample 3.ico" />
+    <Image Include="icon sample 4.ico" />
+    <Image Include="pointcloudprocessoricon.ico" />
     <Image Include="res\bitmap1.bmp" />
     <Image Include="res\bitmap10.bmp" />
     <Image Include="res\bitmap11.bmp" />

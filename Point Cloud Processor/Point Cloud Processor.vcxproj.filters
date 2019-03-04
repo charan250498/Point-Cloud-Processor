@@ -113,5 +113,32 @@
     <Image Include="res\bitmap13.bmp">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="pointcloudprocessoricon.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="icon sample 1.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="icon sample 2.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="icon sample 3.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="icon sample 4.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="favicon (1).ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="favicon (2).ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="favicon (3).ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="favicon.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

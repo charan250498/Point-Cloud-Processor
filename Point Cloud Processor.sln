@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28307.421
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Point Cloud Processor", "Point Cloud Processor\Point Cloud Processor.vcxproj", "{F7BF5693-3170-43BB-B2EC-A8B4F0BAC9DB}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "PointCloudProcessor", "PointCloudProcessor\PointCloudProcessor.vdproj", "{043506B8-7D56-4943-841B-BAC20222267D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,6 +23,10 @@ Global
 		{F7BF5693-3170-43BB-B2EC-A8B4F0BAC9DB}.Release|x64.Build.0 = Release|x64
 		{F7BF5693-3170-43BB-B2EC-A8B4F0BAC9DB}.Release|x86.ActiveCfg = Release|Win32
 		{F7BF5693-3170-43BB-B2EC-A8B4F0BAC9DB}.Release|x86.Build.0 = Release|Win32
+		{043506B8-7D56-4943-841B-BAC20222267D}.Debug|x64.ActiveCfg = Debug
+		{043506B8-7D56-4943-841B-BAC20222267D}.Debug|x86.ActiveCfg = Debug
+		{043506B8-7D56-4943-841B-BAC20222267D}.Release|x64.ActiveCfg = Release
+		{043506B8-7D56-4943-841B-BAC20222267D}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

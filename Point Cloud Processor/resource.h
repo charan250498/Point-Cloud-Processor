@@ -21,6 +21,11 @@
 #define IDB_BITMAP11                    144
 #define IDB_BITMAP12                    145
 #define IDB_BITMAP13                    146
+#define IDI_ICON1                       147
+#define IDI_ICON2                       152
+#define IDI_ICON3                       153
+#define IDI_ICON4                       154
+#define IDI_ICON5                       155
 #define IDC_MFCEDITBROWSE1              1000
 #define IDC_BUTTON1                     1001
 #define IDC_BUTTON2                     1002
@@ -50,7 +55,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        147
+#define _APS_NEXT_RESOURCE_VALUE        156
 #define _APS_NEXT_COMMAND_VALUE         32771
 #define _APS_NEXT_CONTROL_VALUE         1013
 #define _APS_NEXT_SYMED_VALUE           104
