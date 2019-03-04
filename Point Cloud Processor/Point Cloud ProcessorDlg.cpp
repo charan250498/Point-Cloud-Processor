@@ -174,8 +174,12 @@ void CPointCloudProcessorDlg::OnBnClickedButton1()
 	// TODO: Add your control notification handler code here
 	UpdateData();
 	file_path = m_edit_browse_control_string;
+	int str_len = file_path.GetLength();
 	if (m_edit_browse_control_string == L"") {
 		AfxMessageBox(L"Please provide a .TXT File to load");
+	}
+	else if (file_path[str_len - 1] != 't' || file_path[str_len - 2] != 'x' || file_path[str_len - 3] != 't') {
+		AfxMessageBox(L"Please provide a .TXT File to load, does not support other file extension");
 	}
 	else {
 		OnOK();
